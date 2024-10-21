@@ -1,10 +1,5 @@
 extends Node
 
-enum COLLIDE {
-	COLLIDE,
-	NONE,
-	KILL
-}
 enum COLOR {
 	RED,
 	BLUE
@@ -32,19 +27,19 @@ var grid_size = 64
 @export var speed = 15
 #var grid = []
 
-func check_collision(coord: Vector2i, color: COLOR) -> int:
+func can_move(coord: Vector2i, color: COLOR) -> bool:
 	if ($Background.get_cell_atlas_coords(coord).y < 4):
 		# wall
-		return COLLIDE.COLLIDE
+		return false
 	elif ($Background.get_cell_atlas_coords(coord).y < 8):
 		# red wall
 		if (color == COLOR.RED):
-			return COLLIDE.COLLIDE
+			return false
 	elif ($Background.get_cell_atlas_coords(coord).y < 12):
 		# blue wall
 		if (color == COLOR.BLUE):
-			return COLLIDE.COLLIDE
-	return COLLIDE.NONE
+			return false
+	return true
 
 # Converts grid coordinate to position vector
 func coord2pos(coord: Vector2i) -> Vector2:
@@ -76,11 +71,11 @@ func _process(delta: float) -> void:
 		
 		# blue player movement
 		if Input.is_action_just_pressed("Up"):
-			if check_collision(Vector2i(blue_player.pos.x, blue_player.pos.y - 1), blue_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(blue_player.pos.x, blue_player.pos.y - 1), blue_player.color):
 				t = 0
 				blue_player.pos.y -= 1
 			
-			if check_collision(Vector2i(red_player.pos.x, red_player.pos.y - 1), red_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(red_player.pos.x, red_player.pos.y - 1), red_player.color):
 				t = 0
 				red_player.pos.y -= 1
 			
@@ -88,11 +83,11 @@ func _process(delta: float) -> void:
 			moved()
 	
 		elif Input.is_action_just_pressed("Down"):
-			if check_collision(Vector2i(blue_player.pos.x, blue_player.pos.y + 1), blue_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(blue_player.pos.x, blue_player.pos.y + 1), blue_player.color):
 				t = 0
 				blue_player.pos.y += 1
 			
-			if check_collision(Vector2i(red_player.pos.x, red_player.pos.y + 1), red_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(red_player.pos.x, red_player.pos.y + 1), red_player.color):
 				t = 0
 				red_player.pos.y += 1
 			
@@ -100,11 +95,11 @@ func _process(delta: float) -> void:
 			moved()
 	
 		elif Input.is_action_just_pressed("Left"):
-			if check_collision(Vector2i(blue_player.pos.x - 1, blue_player.pos.y), blue_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(blue_player.pos.x - 1, blue_player.pos.y), blue_player.color):
 				t = 0
 				blue_player.pos.x -= 1
 			
-			if check_collision(Vector2i(red_player.pos.x - 1, red_player.pos.y), red_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(red_player.pos.x - 1, red_player.pos.y), red_player.color):
 				t = 0
 				red_player.pos.x -= 1
 			
@@ -112,11 +107,11 @@ func _process(delta: float) -> void:
 			moved()
 	
 		elif Input.is_action_just_pressed("Right"):
-			if check_collision(Vector2i(blue_player.pos.x + 1, blue_player.pos.y), blue_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(blue_player.pos.x + 1, blue_player.pos.y), blue_player.color):
 				t = 0
 				blue_player.pos.x += 1
 			
-			if check_collision(Vector2i(red_player.pos.x + 1, red_player.pos.y), red_player.color) == COLLIDE.NONE:
+			if can_move(Vector2i(red_player.pos.x + 1, red_player.pos.y), red_player.color):
 				t = 0
 				red_player.pos.x += 1
 			
@@ -133,11 +128,13 @@ func _process(delta: float) -> void:
 				var last_blue_pos = blue_player_moves.back()
 				var last_red_pos = red_player_moves.back()
 				
-				# allign values
+				# align values
 				blue_player.pos.x = last_blue_pos.x
 				blue_player.pos.y = last_blue_pos.y
 				red_player.pos.x = last_red_pos.x
 				red_player.pos.y = last_red_pos.y
+				
+				t = 0
 				
 				moves -= 1
 				returnPos()
