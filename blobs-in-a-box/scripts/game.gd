@@ -9,13 +9,6 @@ enum COLOR {
 	RED,
 	BLUE
 }
-# fake enum lmao
-const CELL = {
-	"WALL_RED": Vector2i(0, 0),
-	"WALL_BLUE": Vector2i(1, 0),
-	"WALL": Vector2i(0, 1),
-	"FLOOR": Vector2i(1, 1)
-}
 
 # variables specifically for the players
 var starting_blue_pos = Vector2(1, 1)
@@ -40,12 +33,17 @@ var grid_size = 64
 #var grid = []
 
 func check_collision(coord: Vector2i, color: COLOR) -> int:
-	if ($Background.get_cell_atlas_coords(coord) == CELL.WALL):
+	if ($Background.get_cell_atlas_coords(coord).y < 4):
+		# wall
 		return COLLIDE.COLLIDE
-	if ($Background.get_cell_atlas_coords(coord) == CELL.WALL_BLUE && color == COLOR.BLUE):
-		return COLLIDE.COLLIDE
-	if ($Background.get_cell_atlas_coords(coord) == CELL.WALL_RED && color == COLOR.RED):
-		return COLLIDE.COLLIDE
+	elif ($Background.get_cell_atlas_coords(coord).y < 8):
+		# red wall
+		if (color == COLOR.RED):
+			return COLLIDE.COLLIDE
+	elif ($Background.get_cell_atlas_coords(coord).y < 12):
+		# blue wall
+		if (color == COLOR.BLUE):
+			return COLLIDE.COLLIDE
 	return COLLIDE.NONE
 
 # Converts grid coordinate to position vector
@@ -66,10 +64,10 @@ func _ready() -> void:
 		#for x in range(grid_size.x):
 			#row.push_back(null)
 		#grid.push_back(row)
-	$blue_child.scale = Vector2.ONE * 0.5
+	$blue_child.scale = Vector2.ONE * 0.45
 	$blue_child.position = coord2pos(blue_player.pos)
 	
-	$red_child.scale = Vector2.ONE * 0.5
+	$red_child.scale = Vector2.ONE * 0.45
 	$red_child.position = coord2pos(blue_player.pos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
