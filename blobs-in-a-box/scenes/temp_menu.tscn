@@ -23,7 +23,7 @@ text = "Quit
 "
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(626, 280)
+position = Vector2(604, 274)
 scale = Vector2(0.828283, 0.828283)
 texture = ExtResource("2_f4mdv")
 
