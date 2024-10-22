@@ -26,10 +26,17 @@ var moves := 0
 var movables : Array[Dictionary]
 var flags : Array[Dictionary] = []
 var stars := 0 # to be implemented
-
+@onready var win_label : Label = $Win
+@onready var defeat_label : Label = $Defeat
+var win : bool
+var defeat : bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	win_label.hide()
+	defeat_label.hide()
+	win = false
+	defeat = false
 	# Can only fetch nodes when ready
 	movables = [
 		{
@@ -104,26 +111,28 @@ func _process(delta: float) -> void:
 		
 		# Detect movement
 		var moved := false
-		if Input.is_action_just_pressed("Up"):
-			for obj in movables:
-				if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
-					obj.pos.y -= 1
-					moved = true
-		elif Input.is_action_just_pressed("Down"):
-			for obj in movables:
-				if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
-					obj.pos.y += 1
-					moved = true
-		elif Input.is_action_just_pressed("Left"):
-			for obj in movables:
-				if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
-					obj.pos.x -= 1
-					moved = true
-		elif Input.is_action_just_pressed("Right"):
-			for obj in movables:
-				if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
-					obj.pos.x += 1
-					moved = true
+		if (!win && !defeat):
+			if Input.is_action_just_pressed("Up"):
+				for obj in movables:
+					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
+						obj.pos.y -= 1
+						moved = true
+			elif Input.is_action_just_pressed("Down"):
+				for obj in movables:
+					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
+						obj.pos.y += 1
+						moved = true
+			elif Input.is_action_just_pressed("Left"):
+				for obj in movables:
+					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
+						obj.pos.x -= 1
+						moved = true
+			elif Input.is_action_just_pressed("Right"):
+				for obj in movables:
+					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
+						obj.pos.x += 1
+						moved = true
+		
 		elif Input.is_action_just_pressed("Undo") && moves > 0:
 			# Undo button for moves
 			for obj in movables:
@@ -132,6 +141,9 @@ func _process(delta: float) -> void:
 			t = 0
 			moves -= 1
 			returnPos()
+			
+			if (defeat):
+				hide_defeat(movables)
 		
 		if moved:
 			t = 0
@@ -152,6 +164,8 @@ func _process(delta: float) -> void:
 		if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
 			destroy_object(obj.pos, obj.color)
 			stars -= 1
+		elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
+			show_defeat(obj)
 		
 		# Shader
 		if obj.shader_node:
@@ -168,7 +182,7 @@ func _process(delta: float) -> void:
 			flags_left = true
 			
 	if !flags_left && stars == 0:
-		print("Game won!")
+		show_win()
 	
 
 
@@ -222,7 +236,22 @@ func destroy_object(coord: Vector2i, color: COLOR) -> void:
 		
 	else:
 		$Objects.set_cell(coord)
-	
+
+func show_win() -> void:
+	win = true
+	win_label.show()
+
+func show_defeat(obj) -> void:
+	defeat = true
+	obj.node.hide()
+	defeat_label.show()
+
+func hide_defeat(movables) -> void:
+	defeat = false
+	defeat_label.hide()
+	for obj in movables:
+		obj.node.show()
+
 
 # Dumps debug information
 func returnPos() -> void:
