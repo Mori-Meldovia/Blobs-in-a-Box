@@ -38,7 +38,8 @@ func _ready() -> void:
 			"color": COLOR.BLUE,
 			"pos": null,
 			"last_pos": null,
-			"moves": []
+			"moves": [],
+			"shader_node": $PlayerRed
 		},
 		{
 			"node": $PlayerRed,
@@ -46,7 +47,8 @@ func _ready() -> void:
 			"color": COLOR.RED,
 			"pos": null,
 			"last_pos": null,
-			"moves": []
+			"moves": [],
+			"shader_node": false
 		}
 	]
 	
@@ -151,6 +153,9 @@ func _process(delta: float) -> void:
 			destroy_object(obj.pos, obj.color)
 			stars -= 1
 		
+		# Shader
+		if obj.shader_node:
+			obj.node.material.set("shader_param/offset", (obj.node.position - obj.shader_node.position) * 2)
 	
 	# Win condition
 	var flags_left := false
