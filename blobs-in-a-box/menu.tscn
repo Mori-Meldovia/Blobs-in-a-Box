@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=4 uid="uid://bipigxmy3hfg7"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_xbphc"]
-[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assests/tilemap/walls.png" id="2_k4pic"]
-[ext_resource type="Texture2D" uid="uid://b7sqlte152oaf" path="res://assests/tilemap/objects.png" id="3_51yvl"]
-[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assests/sprite/blue.png" id="4_tpr7i"]
-[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assests/sprite/red.png" id="5_jtfl4"]
+[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_k4pic"]
+[ext_resource type="Texture2D" uid="uid://qop5vhl10xmc" path="res://assets/tilemap/Objects.png" id="3_7m0a3"]
+[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="4_tpr7i"]
+[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="5_jtfl4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_k4pic")
@@ -63,19 +63,24 @@ texture = ExtResource("2_k4pic")
 [sub_resource type="TileSet" id="TileSet_3pr21"]
 sources/2 = SubResource("TileSetAtlasSource_2kmss")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x35r3"]
-texture = ExtResource("3_51yvl")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_agxxm"]
+texture = ExtResource("3_7m0a3")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
+2:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
+2:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_7wl2r"]
 tile_size = Vector2i(32, 32)
-sources/1 = SubResource("TileSetAtlasSource_x35r3")
+sources/0 = SubResource("TileSetAtlasSource_agxxm")
 
 [node name="Node2D" type="Node2D"]
 
@@ -92,7 +97,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="Game"]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAPAAIAAQAAAAAAAAAPAAcAAQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAPAAIAAAAAAAMAAAAPAAcAAAAAAAMAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerBlue" type="Sprite2D" parent="Game"]

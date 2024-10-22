@@ -3,7 +3,7 @@ extends Node
 enum COLOR {
 	BLUE = 1,
 	RED,
-	PURPLE # Most purple objects are just blue and red objects stacked on top of each other. However, goals should be explicitly purple because either the blue or red stepping into the goal should trigger it, whereas a blue and red goal will require both sprites to step into it. Compare colors using bitwise (color & COLOR.BLUE)
+	GRAY # Most purple objects are just blue and red objects stacked on top of each other. However, goals should be explicitly purple because either the blue or red stepping into the goal should trigger it, whereas a blue and red goal will require both sprites to step into it. Compare colors using bitwise (color & COLOR.BLUE)
 }
 
 enum OBJECTS {
@@ -60,10 +60,21 @@ func _ready() -> void:
 	var search_size := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
 	for y in range(search_size.y):
 		for x in range(search_size.x):
-			if $Objects.get_cell_atlas_coords(Vector2i(x, y)).x == 0:
+			var atlas: Vector2i = $Objects.get_cell_atlas_coords(Vector2i(x, y))
+			if atlas.x == 0:
 				# is a flag
-				flags += 1
-			# stars to be implemented
+				if atlas.y == 0:
+					# purple flag
+					flags += 2
+				else:
+					flags += 1
+			if atlas.x == 1:
+				# is a star
+				if atlas.y == 0:
+					# purple star
+					stars += 2
+				else:
+					stars += 1
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -158,7 +169,7 @@ func can_move(coord: Vector2i, color: COLOR) -> bool:
 			return false
 	return true
 
-# Checks for an object that is the same color (or purple)
+# Checks for an object that is the same color
 func check_object(coord: Vector2i, color: COLOR) -> OBJECTS:
 	var atlas : Vector2i = $Objects.get_cell_atlas_coords(coord)
 	if atlas.y == 1 && !(color & COLOR.RED) || atlas.y == 2 && !(color & COLOR.BLUE):
@@ -181,8 +192,8 @@ func returnPos() -> void:
 			color = "BLUE"
 		elif obj.color == COLOR.RED:
 			color = "RED"
-		elif obj.color == COLOR.PURPLE:
-			color = "PURPLE"
+		elif obj.color == COLOR.GRAY:
+			color = "GRAY"
 		
 		print(type + " " + color + " | " + str(obj.pos))
 		print(obj.moves)

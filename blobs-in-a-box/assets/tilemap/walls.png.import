@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1kuveuh1ci1v"
-path="res://.godot/imported/purple.png-7f5b6a97ae77cdc7c6dcc3c0d995a65e.ctex"
+uid="uid://b5hg6xppil3xm"
+path="res://.godot/imported/walls.png-c292f87a4274d1c1b872f05a364fd745.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assests/sprite/purple.png"
-dest_files=["res://.godot/imported/purple.png-7f5b6a97ae77cdc7c6dcc3c0d995a65e.ctex"]
+source_file="res://assets/tilemap/walls.png"
+dest_files=["res://.godot/imported/walls.png-c292f87a4274d1c1b872f05a364fd745.ctex"]
 
 [params]
 
