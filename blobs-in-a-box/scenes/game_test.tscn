@@ -171,6 +171,20 @@ func _process(delta: float) -> void:
 						obj.pos.x += 1
 						moved = true
 		
+		# Check for belts
+		for obj in movables:
+			if moved && obj.pos != obj.moves[-1] && obj.type == MOVABLES.PLAYER:
+				var object := check_object(obj.pos, obj.color)
+				
+				if object == OBJECTS.BELT_UP && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
+					obj.pos.y -= 1
+				if object == OBJECTS.BELT_DOWN && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
+					obj.pos.y += 1
+				if object == OBJECTS.BELT_LEFT && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
+					obj.pos.x -= 1
+				if object == OBJECTS.BELT_RIGHT && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
+					obj.pos.x += 1
+		
 		# Undo
 		if Input.is_action_just_pressed(\"Undo\") && moves > 0:
 			for obj in movables:
@@ -204,7 +218,7 @@ func _process(delta: float) -> void:
 	
 	# Check for objects
 	for obj in movables:
-		if (moved && obj.moves[-1] != obj.moves[-2]):
+		if moved && obj.moves[-1] != obj.moves[-2]:
 			var object := check_object(obj.pos, obj.color)
 			
 			# Star
@@ -223,7 +237,6 @@ func _process(delta: float) -> void:
 						var pos := Vector2i(x, y)
 						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
 						if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
-							print(pos)
 							$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
 						elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
 							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
@@ -710,7 +723,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAPAAcAAQAAAAMAAAAPAAIAAQAAAAMAAAAJAAUAAQACAAMAAAAIAAQAAQAGAAIAAAAKAAIAAQADAAMAAAAHAAIAAQABAAAAAAA=")
+tile_map_data = PackedByteArray("AAAPAAcAAQAAAAMAAAAPAAIAAQAAAAMAAAAJAAUAAQACAAMAAAAIAAQAAQAGAAIAAAAKAAIAAQADAAMAAAAHAAIAAQABAAAAAAAFAAIAAQASAAMAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerRed" type="Sprite2D" parent="."]
