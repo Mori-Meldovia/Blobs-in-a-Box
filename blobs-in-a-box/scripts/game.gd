@@ -3,12 +3,13 @@ extends Node
 enum COLOR {
 	BLUE = 1,
 	RED,
-	GRAY # Most purple objects are just blue and red objects stacked on top of each other. However, goals should be explicitly purple because either the blue or red stepping into the goal should trigger it, whereas a blue and red goal will require both sprites to step into it. Compare colors using bitwise (color & COLOR.BLUE)
+	GRAY
 }
 
 enum OBJECTS {
 	EMPTY = -1,
 	FLAG,
+	STAR,
 	SKULL
 }
 
@@ -23,7 +24,7 @@ const SPEED := 15
 var moves := 0
 
 var movables : Array[Dictionary]
-var flags := 0
+var flags : Array[Dictionary] = []
 var stars := 0 # to be implemented
 
 
@@ -60,14 +61,28 @@ func _ready() -> void:
 	var search_size := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
 	for y in range(search_size.y):
 		for x in range(search_size.x):
-			var atlas: Vector2i = $Objects.get_cell_atlas_coords(Vector2i(x, y))
+			var pos := Vector2i(x, y)
+			var atlas: Vector2i = $Objects.get_cell_atlas_coords(pos)
 			if atlas.x == 0:
 				# is a flag
 				if atlas.y == 0:
 					# purple flag
-					flags += 2
+					flags.append({
+						"pos": pos,
+						"color": COLOR.BLUE,
+						"reached": false
+					})
+					flags.append({
+						"pos": pos,
+						"color": COLOR.RED,
+						"reached": false
+					})
 				else:
-					flags += 1
+					flags.append({
+						"pos": pos,
+						"color": atlas.y,
+						"reached": false
+					})
 			if atlas.x == 1:
 				# is a star
 				if atlas.y == 0:
@@ -129,19 +144,25 @@ func _process(delta: float) -> void:
 	for obj in movables:
 		# Update positions
 		obj.node.position = obj.last_pos.lerp(coord2pos(obj.pos), t * t * (3 - 2 * t))
-	
-	
-	# Check for objects
-	#to be implemented
-	#check_object(obj.pos, obj.color)
-	#if object is star, star--, destroy star
+		
+		# Check for objects
+		var object := check_object(obj.pos, obj.color)
+		if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
+			destroy_object(obj.pos, obj.color)
+			stars -= 1
+		
 	
 	# Win condition
-	var flags_left := flags
-	for obj in movables:
-		if check_object(obj.pos, obj.color) == OBJECTS.FLAG:
-			flags_left -= 1
-	if flags_left == 0 && stars == 0:
+	var flags_left := false
+	for flag in flags:
+		flag.reached = false
+		for obj in movables:
+			if obj.pos == flag.pos && obj.color & flag.color:
+				flag.reached = true
+		if !flag.reached:
+			flags_left = true
+			
+	if !flags_left && stars == 0:
 		print("Game won!")
 	
 
@@ -172,14 +193,35 @@ func can_move(coord: Vector2i, color: COLOR) -> bool:
 # Checks for an object that is the same color
 func check_object(coord: Vector2i, color: COLOR) -> OBJECTS:
 	var atlas : Vector2i = $Objects.get_cell_atlas_coords(coord)
-	if atlas.y == 1 && !(color & COLOR.RED) || atlas.y == 2 && !(color & COLOR.BLUE):
+	if atlas.y == 1 && !(color & COLOR.BLUE) || atlas.y == 2 && !(color & COLOR.RED):
 		# non matching color
 		return OBJECTS.EMPTY
 	else:
 		return atlas.x # should correspond to OBJECTS
 
+# Destroys an object of that color
+func destroy_object(coord: Vector2i, color: COLOR) -> void:
+	var atlas : Vector2i = $Objects.get_cell_atlas_coords(coord)
+	if atlas.y == 0 && color != COLOR.GRAY:
+		# Purple object. Destroy corresponding component.
+		if color == COLOR.RED:
+			# Spawn a blue object
+			$Objects.set_cell(coord, 0, Vector2i(atlas.x, 1))
+		elif color == COLOR.BLUE:
+			# Spawn a red object
+			$Objects.set_cell(coord, 0, Vector2i(atlas.x, 2))
+		else:
+			# What is this
+			$Objects.set_cell(coord)
+			print("Error in destroy_object()")
+		
+	else:
+		$Objects.set_cell(coord)
+	
+
 # Dumps debug information
 func returnPos() -> void:
+	return
 	for obj in movables:
 		var type = "UNKNOWN"
 		if obj.type == MOVABLES.PLAYER:
