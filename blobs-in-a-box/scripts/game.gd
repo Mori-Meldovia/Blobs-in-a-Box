@@ -186,6 +186,5 @@ func returnPos() -> void:
 		
 		print(type + " " + color + " | " + str(obj.pos))
 		print(obj.moves)
-	
 	print()
 	
