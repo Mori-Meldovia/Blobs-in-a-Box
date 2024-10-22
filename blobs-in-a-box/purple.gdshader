@@ -10,7 +10,7 @@ void fragment() {
 	float intersection = tex1.a * tex2.a;
 
 	vec4 blended_color = mix(tex1, tex2, intersection > 0. ? 0.3 : 0.);
-	if (blended_color.b > 0.2) blended_color += vec4(0.15, 0.05, 0.2, 0);
+	if (blended_color.b > 0.2) blended_color += vec4(0.1, 0, 0.15, 0);
 
     COLOR = blended_color;
 }
