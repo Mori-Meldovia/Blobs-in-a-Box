@@ -173,7 +173,7 @@ func _process(delta: float) -> void:
 		
 		# Check for belts
 		for obj in movables:
-			if moved && obj.pos != obj.moves[-1] && obj.type == MOVABLES.PLAYER:
+			if moved && obj.type == MOVABLES.PLAYER:
 				var object := check_object(obj.pos, obj.color)
 				
 				if object == OBJECTS.BELT_UP && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
