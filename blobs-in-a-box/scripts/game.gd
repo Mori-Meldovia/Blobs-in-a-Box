@@ -23,11 +23,11 @@ const SPEED := 15
 
 var moves := 0
 
-var movables : Array[Dictionary]
+var movables : Array[Dictionary] = []
 var flags : Array[Dictionary] = []
-var stars := 0 # to be implemented
-var win : bool
-var defeat : bool
+var stars := 0
+var win := false
+var defeat := false
 @onready var win_label : Label = $Win
 @onready var defeat_label : Label = $Defeat
 
@@ -36,36 +36,42 @@ var defeat : bool
 func _ready() -> void:
 	win_label.hide()
 	defeat_label.hide()
-	win = false
-	defeat = false
-	# Can only fetch nodes when ready
-	movables = [
-		{
-			"node": $PlayerBlue,
-			"type": MOVABLES.PLAYER,
-			"color": COLOR.BLUE,
-			"pos": null,
-			"last_pos": null,
-			"moves": [],
-			"shader_node": $PlayerRed
-		},
-		{
-			"node": $PlayerRed,
-			"type": MOVABLES.PLAYER,
-			"color": COLOR.RED,
-			"pos": null,
-			"last_pos": null,
-			"moves": [],
-			"shader_node": false
-		}
-	]
 	
-	# Initialise obj.pos, snap to grid, and add an initial move
-	for obj in movables:
-		obj.node.scale = Vector2.ONE * 0.45
-		obj.pos = pos2coord(obj.node.position)
-		obj.node.position = coord2pos(obj.pos)
-		obj.moves.append(obj.pos)
+	# Fetch and load nodes automatically
+	for child in get_children():
+		if child is not Sprite2D:
+			continue
+		
+		var name := child.get_name()
+		
+		var type := MOVABLES.PUSH
+		var color := COLOR.GRAY
+		var shader_node = null
+		
+		if name.begins_with("Player"):
+			type = MOVABLES.PLAYER
+		
+		
+		if name.ends_with("Red"):
+			color = COLOR.RED
+		elif name.ends_with("Blue"):
+			color = COLOR.BLUE
+			shader_node = get_node(name.replace("Blue", "Red"))
+		
+		var obj := {
+			"node": child,
+			"type": type,
+			"color": color,
+			"pos": pos2coord(child.position),
+			"last_pos": null,
+			"moves": [pos2coord(child.position)],
+			"shader_node": shader_node
+		}
+		movables.append(obj)
+		
+		child.scale = Vector2.ONE * 0.45
+		child.position = coord2pos(obj.pos)
+	
 	
 	# Make a count of all flags and stars
 	var search_size := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
@@ -107,13 +113,14 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var t := 1.
 func _process(delta: float) -> void:
+	var moved := false
+	
 	if t >= 1:
 		# Store last position for interpolation
 		for obj in movables:
 			obj.last_pos = coord2pos(obj.pos)
 		
 		# Detect movement
-		var moved := false
 		if (!win && !defeat):
 			if Input.is_action_just_pressed("Up"):
 				for obj in movables:
@@ -159,20 +166,26 @@ func _process(delta: float) -> void:
 		t = minf(t + delta * SPEED, 1)
 	
 	for obj in movables:
+		# Check for objects
+		if moved:
+			var object := check_object(obj.pos, obj.color)
+			await get_tree().create_timer(0.05).timeout # Replace with animation
+			if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
+				destroy_object(obj.pos, obj.color)
+				stars -= 1
+			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
+				defeat_show(obj)
+		
 		# Update positions
 		obj.node.position = obj.last_pos.lerp(coord2pos(obj.pos), t * t * (3 - 2 * t))
-		
-		# Check for objects
-		var object := check_object(obj.pos, obj.color)
-		if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
-			destroy_object(obj.pos, obj.color)
-			stars -= 1
-		elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
-			defeat_show(obj)
-		
-		# Shader
+	
+	# Shader
+	for obj in movables:
 		if obj.shader_node:
-			obj.node.material.set("shader_param/offset", (obj.node.position - obj.shader_node.position) * 2)
+			var offset : Vector2 = obj.node.position - obj.shader_node.position
+			if false:
+				offset = Vector2.ZERO
+			obj.node.material.set("shader_param/offset", offset * 2)
 	
 	# Win condition
 	var flags_left := false
@@ -183,7 +196,7 @@ func _process(delta: float) -> void:
 				flag.reached = true
 		if !flag.reached:
 			flags_left = true
-			
+	
 	if !flags_left && stars == 0:
 		win_show()
 	

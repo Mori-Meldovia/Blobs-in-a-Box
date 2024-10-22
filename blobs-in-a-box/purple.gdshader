@@ -14,4 +14,3 @@ void fragment() {
 
     COLOR = blended_color;
 }
-
