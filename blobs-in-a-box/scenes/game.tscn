@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=4 uid="uid://bipigxmy3hfg7"]
+[gd_scene load_steps=14 format=4 uid="uid://6a10vhtucbey"]
 
-[ext_resource type="Script" path="res://scripts/game.gd" id="1_xbphc"]
-[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_k4pic"]
-[ext_resource type="Texture2D" uid="uid://qop5vhl10xmc" path="res://assets/tilemap/Objects.png" id="3_7m0a3"]
-[ext_resource type="Shader" path="res://purple.gdshader" id="4_28i6u"]
-[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="4_tpr7i"]
-[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="5_jtfl4"]
+[ext_resource type="PackedScene" uid="uid://6a10vhtucbey" path="res://scenes/temp_menu.tscn" id="1_b08i8"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_jowp5"]
+[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_pbbi5"]
+[ext_resource type="Texture2D" uid="uid://qop5vhl10xmc" path="res://assets/tilemap/Objects.png" id="3_vr2le"]
+[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="4_1adg2"]
+[ext_resource type="Shader" path="res://purple.gdshader" id="5_w8mym"]
+[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="6_fbmai"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
-texture = ExtResource("2_k4pic")
+texture = ExtResource("2_pbbi5")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -264,7 +265,7 @@ terrain_set_0/terrain_2/color = Color(0.578879, 0.460658, 0, 1)
 sources/2 = SubResource("TileSetAtlasSource_2kmss")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_agxxm"]
-texture = ExtResource("3_7m0a3")
+texture = ExtResource("3_vr2le")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -286,14 +287,16 @@ sources/0 = SubResource("TileSetAtlasSource_agxxm")
 load_path = "res://.godot/imported/red.png-92224c10c258f02984efc03eb2d4d120.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ci8nm"]
-shader = ExtResource("4_28i6u")
+shader = ExtResource("5_w8mym")
 shader_parameter/offset = Vector2(-1000, -1000)
 shader_parameter/texture2 = SubResource("CompressedTexture2D_f8lb6")
 
 [node name="Node2D" type="Node2D"]
 
+[node name="Main Menu" parent="." instance=ExtResource("1_b08i8")]
+
 [node name="Game" type="Node" parent="."]
-script = ExtResource("1_xbphc")
+script = ExtResource("1_jowp5")
 
 [node name="Walls" type="TileMapLayer" parent="Game"]
 texture_filter = 1
@@ -310,10 +313,10 @@ tile_set = SubResource("TileSet_7wl2r")
 [node name="PlayerRed" type="Sprite2D" parent="Game"]
 position = Vector2(160, 481)
 scale = Vector2(0.45, 0.427)
-texture = ExtResource("5_jtfl4")
+texture = ExtResource("4_1adg2")
 
 [node name="PlayerBlue" type="Sprite2D" parent="Game"]
 material = SubResource("ShaderMaterial_ci8nm")
 position = Vector2(162, 160)
 scale = Vector2(0.45, 0.456)
-texture = ExtResource("4_tpr7i")
+texture = ExtResource("6_fbmai")

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Blobs in a Box"
-run/main_scene="res://menu.tscn"
+run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assests/sprite/icon.svg"
+
+[autoload]
+
+GameHolder="*res://scripts/game_holder.gd"
 
 [input]
 
