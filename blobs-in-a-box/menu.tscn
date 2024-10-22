@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://bipigxmy3hfg7"]
+[gd_scene load_steps=10 format=4 uid="uid://bipigxmy3hfg7"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_xbphc"]
-[ext_resource type="Texture2D" uid="uid://blxkcje1i1312" path="res://assests/sprite/icon.svg" id="2_cvutw"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assests/tilemap/walls.png" id="2_k4pic"]
 [ext_resource type="Texture2D" uid="uid://b7sqlte152oaf" path="res://assests/tilemap/objects.png" id="3_51yvl"]
+[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assests/sprite/blue.png" id="4_tpr7i"]
+[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assests/sprite/red.png" id="5_jtfl4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_k4pic")
@@ -95,11 +96,11 @@ tile_map_data = PackedByteArray("AAAPAAIAAQAAAAAAAAAPAAcAAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerBlue" type="Sprite2D" parent="Game"]
-position = Vector2(158, 158)
+position = Vector2(162, 160)
 scale = Vector2(0.45, 0.456)
-texture = ExtResource("2_cvutw")
+texture = ExtResource("4_tpr7i")
 
 [node name="PlayerRed" type="Sprite2D" parent="Game"]
 position = Vector2(160, 481)
 scale = Vector2(0.45, 0.427)
-texture = ExtResource("2_cvutw")
+texture = ExtResource("5_jtfl4")

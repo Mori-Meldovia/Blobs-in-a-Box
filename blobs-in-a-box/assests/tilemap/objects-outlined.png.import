@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4p756yqoh2c"
-path="res://.godot/imported/blue.png-d5a7c6d717da3a742cff90851dbfdcae.ctex"
+uid="uid://iqy8nwtycskw"
+path="res://.godot/imported/objects-outlined.png-e33d1ad815741bd133fe6218f61e577c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assests/sprite/blue.png"
-dest_files=["res://.godot/imported/blue.png-d5a7c6d717da3a742cff90851dbfdcae.ctex"]
+source_file="res://assests/tilemap/objects-outlined.png"
+dest_files=["res://.godot/imported/objects-outlined.png-e33d1ad815741bd133fe6218f61e577c.ctex"]
 
 [params]
 
