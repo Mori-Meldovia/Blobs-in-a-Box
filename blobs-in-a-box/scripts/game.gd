@@ -10,7 +10,26 @@ enum OBJECTS {
 	EMPTY = -1,
 	FLAG,
 	STAR,
-	SKULL
+	SKULL,
+	BUTTON_GREEN,
+	BUTTON_YELLOW,
+	BUTTON_AQUA,
+	GATE_GREEN_H_CLOSED,
+	GATE_GREEN_H_OPEN,
+	GATE_GREEN_V_CLOSED,
+	GATE_GREEN_V_OPEN,
+	GATE_YELLOW_H_CLOSED,
+	GATE_YELLOW_H_OPEN,
+	GATE_YELLOW_V_CLOSED,
+	GATE_YELLOW_V_OPEN,
+	GATE_AQUA_H_CLOSED,
+	GATE_AQUA_H_OPEN,
+	GATE_AQUA_V_CLOSED,
+	GATE_AQUA_V_OPEN,
+	BELT_RIGHT,
+	BELT_DOWN,
+	BELT_LEFT,
+	BELT_UP
 }
 
 enum MOVABLES {
@@ -20,6 +39,7 @@ enum MOVABLES {
 
 const GRID_SIZE := 64
 const SPEED := 15
+var SEARCH_SIZE := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
 
 var moves := 0
 
@@ -42,21 +62,21 @@ func _ready() -> void:
 		if child is not Sprite2D:
 			continue
 		
-		var name := child.get_name()
+		var child_name := child.get_name()
 		
 		var type := MOVABLES.PUSH
 		var color := COLOR.GRAY
 		var shader_node = null
 		
-		if name.begins_with("Player"):
+		if child_name.begins_with("Player"):
 			type = MOVABLES.PLAYER
 		
 		
-		if name.ends_with("Red"):
+		if child_name.ends_with("Red"):
 			color = COLOR.RED
-		elif name.ends_with("Blue"):
+		elif child_name.ends_with("Blue"):
 			color = COLOR.BLUE
-			shader_node = get_node(name.replace("Blue", "Red"))
+			shader_node = get_node(child_name.replace("Blue", "Red"))
 		
 		var obj := {
 			"node": child,
@@ -72,13 +92,12 @@ func _ready() -> void:
 		child.scale = Vector2.ONE * 0.45
 		child.position = coord2pos(obj.pos)
 	
-	
-	# Make a count of all flags and stars
-	var search_size := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
-	for y in range(search_size.y):
-		for x in range(search_size.x):
+	for y in range(SEARCH_SIZE.y):
+		for x in range(SEARCH_SIZE.x):
 			var pos := Vector2i(x, y)
-			var atlas: Vector2i = $Objects.get_cell_atlas_coords(pos)
+			var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+			
+			# Make a count of all flags and stars
 			if atlas.x == 0:
 				# is a flag
 				if atlas.y == 0:
@@ -121,39 +140,71 @@ func _process(delta: float) -> void:
 			obj.last_pos = coord2pos(obj.pos)
 		
 		# Detect movement
+		var move_intended := false
 		if (!win && !defeat):
 			if Input.is_action_just_pressed("Up"):
+				move_intended = true
 				for obj in movables:
 					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
 						obj.pos.y -= 1
 						moved = true
 			elif Input.is_action_just_pressed("Down"):
+				move_intended = true
 				for obj in movables:
 					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
 						obj.pos.y += 1
 						moved = true
 			elif Input.is_action_just_pressed("Left"):
+				move_intended = true
 				for obj in movables:
 					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
 						obj.pos.x -= 1
 						moved = true
 			elif Input.is_action_just_pressed("Right"):
+				move_intended = true
 				for obj in movables:
 					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
 						obj.pos.x += 1
 						moved = true
+			elif Input.is_action_just_pressed("Wait"):
+				move_intended = true
 		
-		elif Input.is_action_just_pressed("Undo") && moves > 0:
-			# Undo button for moves
+		# Check for belts
+		for obj in movables:
+			if move_intended && obj.type == MOVABLES.PLAYER:
+				var object := check_object(obj.moves[-1], obj.color)
+				
+				if object == OBJECTS.BELT_UP && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
+					obj.pos.y -= 1
+					moved = true
+				if object == OBJECTS.BELT_DOWN && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
+					obj.pos.y += 1
+					moved = true
+				if object == OBJECTS.BELT_LEFT && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
+					obj.pos.x -= 1
+					moved = true
+				if object == OBJECTS.BELT_RIGHT && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
+					obj.pos.x += 1
+					moved = true
+		
+		# Undo
+		if Input.is_action_just_pressed("Undo") && moves > 0:
 			for obj in movables:
+				
+				var object := check_object(obj.pos, obj.color)
+				# Buttons
+				checkButtons(object)
+				
 				obj.moves.pop_back()
 				obj.pos = obj.moves.back()
+			
 			t = 0
 			moves -= 1
 			returnPos()
 			
 			if (defeat):
-				defeat_hide(movables)
+				defeat_hide()
+			
 		
 		if moved:
 			t = 0
@@ -164,28 +215,32 @@ func _process(delta: float) -> void:
 		
 	else:
 		t = minf(t + delta * SPEED, 1)
+		
+		for obj in movables:
+			# Update positions
+			obj.node.position = obj.last_pos.lerp(coord2pos(obj.pos), t * t * (3 - 2 * t))
+		
+			# Shader
+			if obj.shader_node:
+				var offset : Vector2 = obj.node.position - obj.shader_node.position
+				obj.node.material.set("shader_parameter/offset", offset * 2)
 	
+	# Check for objects
 	for obj in movables:
-		# Check for objects
-		if moved:
+		if moved && obj.moves[-1] != obj.moves[-2]:
 			var object := check_object(obj.pos, obj.color)
-			await get_tree().create_timer(0.05).timeout # Replace with animation
+			
+			# Star
 			if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
 				destroy_object(obj.pos, obj.color)
 				stars -= 1
+			
+			# Skull
 			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
 				defeat_show(obj)
-		
-		# Update positions
-		obj.node.position = obj.last_pos.lerp(coord2pos(obj.pos), t * t * (3 - 2 * t))
-	
-	# Shader
-	for obj in movables:
-		if obj.shader_node:
-			var offset : Vector2 = obj.node.position - obj.shader_node.position
-			if false:
-				offset = Vector2.ZERO
-			obj.node.material.set("shader_param/offset", offset * 2)
+			
+			# Buttons
+			checkButtons(object)
 	
 	# Win condition
 	var flags_left := false
@@ -223,6 +278,10 @@ func can_move(coord: Vector2i, color: COLOR) -> bool:
 		# blue wall
 		if color & COLOR.BLUE:
 			return false
+	# check for gates
+	var obj = check_object(coord, color)
+	if obj == OBJECTS.GATE_GREEN_H_CLOSED || obj == OBJECTS.GATE_GREEN_V_CLOSED || obj == OBJECTS.GATE_YELLOW_H_CLOSED || obj == OBJECTS.GATE_YELLOW_V_CLOSED || obj == OBJECTS.GATE_AQUA_H_CLOSED || obj == OBJECTS.GATE_AQUA_V_CLOSED:
+		return false
 	return true
 
 # Checks for an object that is the same color
@@ -232,7 +291,7 @@ func check_object(coord: Vector2i, color: COLOR) -> OBJECTS:
 		# non matching color
 		return OBJECTS.EMPTY
 	else:
-		return atlas.x # should correspond to OBJECTS
+		return atlas.x as OBJECTS # should correspond to OBJECTS
 
 # Destroys an object of that color
 func destroy_object(coord: Vector2i, color: COLOR) -> void:
@@ -241,10 +300,10 @@ func destroy_object(coord: Vector2i, color: COLOR) -> void:
 		# Purple object. Destroy corresponding component.
 		if color == COLOR.RED:
 			# Spawn a blue object
-			$Objects.set_cell(coord, 0, Vector2i(atlas.x, 1))
+			$Objects.set_cell(coord, 1, Vector2i(atlas.x, 1))
 		elif color == COLOR.BLUE:
 			# Spawn a red object
-			$Objects.set_cell(coord, 0, Vector2i(atlas.x, 2))
+			$Objects.set_cell(coord, 1, Vector2i(atlas.x, 2))
 		else:
 			# What is this
 			$Objects.set_cell(coord)
@@ -252,6 +311,35 @@ func destroy_object(coord: Vector2i, color: COLOR) -> void:
 		
 	else:
 		$Objects.set_cell(coord)
+
+func checkButtons(object : OBJECTS) -> void:
+	if object == OBJECTS.BUTTON_GREEN:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
+							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+	elif object == OBJECTS.BUTTON_YELLOW:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_YELLOW_H_CLOSED || atlas.x == OBJECTS.GATE_YELLOW_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_YELLOW_H_OPEN || atlas.x == OBJECTS.GATE_YELLOW_V_OPEN:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+	elif object == OBJECTS.BUTTON_AQUA:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_AQUA_H_CLOSED || atlas.x == OBJECTS.GATE_AQUA_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
 
 func win_show() -> void:
 	win = true
@@ -262,7 +350,7 @@ func defeat_show(obj) -> void:
 	defeat_label.show()
 	obj.node.hide()
 
-func defeat_hide(movables) -> void:
+func defeat_hide() -> void:
 	defeat = false
 	defeat_label.hide()
 	for obj in movables:
@@ -271,6 +359,7 @@ func defeat_hide(movables) -> void:
 # Dumps debug information
 func returnPos() -> void:
 	return
+	@warning_ignore("unreachable_code")
 	for obj in movables:
 		var type = "UNKNOWN"
 		if obj.type == MOVABLES.PLAYER:
@@ -286,6 +375,5 @@ func returnPos() -> void:
 		elif obj.color == COLOR.GRAY:
 			color = "GRAY"
 		
-		print(type + " " + color + " | " + str(obj.pos))
-		print(obj.moves)
-		print()
+		print(type + " " + color + " | " + str(obj.moves))
+	print()
