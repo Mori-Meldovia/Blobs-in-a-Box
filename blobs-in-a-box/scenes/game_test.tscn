@@ -188,14 +188,21 @@ func _process(delta: float) -> void:
 		# Undo
 		if Input.is_action_just_pressed(\"Undo\") && moves > 0:
 			for obj in movables:
+				
+				var object := check_object(obj.pos, obj.color)
+				# Buttons
+				checkButtons(object)
+				
 				obj.moves.pop_back()
 				obj.pos = obj.moves.back()
+			
 			t = 0
 			moves -= 1
 			returnPos()
 			
 			if (defeat):
 				defeat_hide()
+			
 		
 		if moved:
 			t = 0
@@ -231,33 +238,7 @@ func _process(delta: float) -> void:
 				defeat_show(obj)
 			
 			# Buttons
-			elif object == OBJECTS.BUTTON_GREEN:
-				for y in range(SEARCH_SIZE.y):
-					for x in range(SEARCH_SIZE.x):
-						var pos := Vector2i(x, y)
-						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
-						elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
-			elif object == OBJECTS.BUTTON_YELLOW:
-				for y in range(SEARCH_SIZE.y):
-					for x in range(SEARCH_SIZE.x):
-						var pos := Vector2i(x, y)
-						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						if atlas.x == OBJECTS.GATE_YELLOW_H_CLOSED || atlas.x == OBJECTS.GATE_YELLOW_V_CLOSED:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
-						elif atlas.x == OBJECTS.GATE_YELLOW_H_OPEN || atlas.x == OBJECTS.GATE_YELLOW_V_OPEN:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
-			elif object == OBJECTS.BUTTON_AQUA:
-				for y in range(SEARCH_SIZE.y):
-					for x in range(SEARCH_SIZE.x):
-						var pos := Vector2i(x, y)
-						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						if atlas.x == OBJECTS.GATE_AQUA_H_CLOSED || atlas.x == OBJECTS.GATE_AQUA_V_CLOSED:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
-						elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+			checkButtons(object)
 	
 	# Win condition
 	var flags_left := false
@@ -328,6 +309,35 @@ func destroy_object(coord: Vector2i, color: COLOR) -> void:
 		
 	else:
 		$Objects.set_cell(coord)
+
+func checkButtons(object : OBJECTS) -> void:
+	if object == OBJECTS.BUTTON_GREEN:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
+							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+	elif object == OBJECTS.BUTTON_YELLOW:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_YELLOW_H_CLOSED || atlas.x == OBJECTS.GATE_YELLOW_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_YELLOW_H_OPEN || atlas.x == OBJECTS.GATE_YELLOW_V_OPEN:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+	elif object == OBJECTS.BUTTON_AQUA:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_AQUA_H_CLOSED || atlas.x == OBJECTS.GATE_AQUA_V_CLOSED:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
+					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
 
 func win_show() -> void:
 	win = true
