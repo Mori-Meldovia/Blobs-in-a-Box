@@ -39,13 +39,15 @@ enum MOVABLES {
 
 const GRID_SIZE := 64
 const SPEED := 15
+const SOURCE = 3
 var SEARCH_SIZE := DisplayServer.screen_get_usable_rect().size / (Vector2i.ONE * GRID_SIZE)
 
 var moves := 0
 
 var movables : Array[Dictionary] = []
-var flags : Array[Dictionary] = []
-var stars := 0
+var flags : Array[Dictionary] = [] # "pos" and "color" and "reached"
+var objects_destoryed : Array[Dictionary] = [] # "move_occurence", "pos", "original_v2i_object", "obj_type"
+var no_of_stars := 0
 var win := false
 var defeat := false
 @onready var win_label : Label = $Win
@@ -122,11 +124,9 @@ func _ready() -> void:
 				# is a star
 				if atlas.y == 0:
 					# purple star
-					stars += 2
+					no_of_stars += 2
 				else:
-					stars += 1
-	print(win)
-	print(defeat)
+					no_of_stars += 1
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -187,31 +187,51 @@ func _process(delta: float) -> void:
 					obj.pos.x += 1
 					moved = true
 		
-		# Undo
-		if Input.is_action_just_pressed("Undo") && moves > 0:
-			for obj in movables:
-				
-				var object := check_object(obj.pos, obj.color)
-				# Buttons
-				checkButtons(object)
-				
-				obj.moves.pop_back()
-				obj.pos = obj.moves.back()
-			
-			t = 0
-			moves -= 1
-			returnPos()
-			
-			if (defeat):
-				defeat_hide()
-			
-		
 		if moved:
 			t = 0
 			moves += 1
 			for obj in movables:
 				obj.moves.append(obj.pos)
 			returnPos()
+		
+		if (!win):
+			# Undo
+			if Input.is_action_just_pressed("Undo") && moves > 0:
+				for obj in movables:
+					
+					var object := check_object(obj.pos, obj.color)
+					
+					# Buttons
+					checkButtons(object)
+					
+					# Players
+					obj.moves.pop_back()
+					obj.pos = obj.moves.back()
+					
+					# Destroyed objects : For stars and dups (TBI)
+					var current_destroyed_index = 0
+					for destroyed in objects_destoryed:
+						# "move_occurence", "pos", "original_v2i_object", "obj_type"
+						if destroyed.move_occurence == moves:
+								objects_destoryed.remove_at(current_destroyed_index)
+								current_destroyed_index -= 1
+								
+								# sets the object back to normal
+								$Objects.set_cell(destroyed.pos, SOURCE, destroyed.original_v2i_object)
+								
+								# Stars (counting)
+								if destroyed.obj_type == OBJECTS.STAR:
+										no_of_stars += 1
+						current_destroyed_index += 1
+				
+				t = 0
+				moves -= 1
+				returnPos()
+				
+				# defeat
+				if (defeat):
+					defeat_hide()
+				
 		
 	else:
 		t = minf(t + delta * SPEED, 1)
@@ -226,21 +246,37 @@ func _process(delta: float) -> void:
 				obj.node.material.set("shader_parameter/offset", offset * 2)
 	
 	# Check for objects
+	
 	for obj in movables:
 		if moved && obj.moves[-1] != obj.moves[-2]:
 			var object := check_object(obj.pos, obj.color)
 			
 			# Star
 			if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
-				destroy_object(obj.pos, obj.color)
-				stars -= 1
+				destroy_object(obj.pos, obj.color, OBJECTS.STAR)
+				no_of_stars -= 1
 			
 			# Skull
 			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
+				
+				
 				defeat_show(obj)
 			
 			# Buttons
 			checkButtons(object)
+	
+	var buttons_rehit : Array = []
+	var total_num_on_button = 0
+	for obj1 in movables:
+		for obj2 in movables:
+			var is_button_G = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_GREEN
+			var is_button_Y = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_YELLOW
+			var is_button_A = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_AQUA
+			if obj2 != obj1 && obj2.pos == obj1.pos && (is_button_G || is_button_Y || is_button_A):
+				total_num_on_button += 1
+		
+		if total_num_on_button > 1:
+			checkButtons(check_object(obj1.pos, obj1.color))
 	
 	# Win condition
 	var flags_left := false
@@ -252,9 +288,9 @@ func _process(delta: float) -> void:
 		if !flag.reached:
 			flags_left = true
 	
-	if !flags_left && stars == 0:
+	if !flags_left && no_of_stars == 0:
 		win_show()
-	
+
 
 
 # Converts grid coordinate to position vector
@@ -294,16 +330,19 @@ func check_object(coord: Vector2i, color: COLOR) -> OBJECTS:
 		return atlas.x as OBJECTS # should correspond to OBJECTS
 
 # Destroys an object of that color
-func destroy_object(coord: Vector2i, color: COLOR) -> void:
+func destroy_object(coord: Vector2i, color: COLOR, obj_type : OBJECTS) -> void:
 	var atlas : Vector2i = $Objects.get_cell_atlas_coords(coord)
+	var new_v2i_object : Vector2i
 	if atlas.y == 0 && color != COLOR.GRAY:
 		# Purple object. Destroy corresponding component.
 		if color == COLOR.RED:
 			# Spawn a blue object
-			$Objects.set_cell(coord, 1, Vector2i(atlas.x, 1))
+			new_v2i_object = Vector2i(atlas.x, 1)
+			$Objects.set_cell(coord, SOURCE, Vector2i(atlas.x, 1))
 		elif color == COLOR.BLUE:
 			# Spawn a red object
-			$Objects.set_cell(coord, 1, Vector2i(atlas.x, 2))
+			new_v2i_object = Vector2i(atlas.x, 2)
+			$Objects.set_cell(coord, SOURCE, Vector2i(atlas.x, 2))
 		else:
 			# What is this
 			$Objects.set_cell(coord)
@@ -311,6 +350,13 @@ func destroy_object(coord: Vector2i, color: COLOR) -> void:
 		
 	else:
 		$Objects.set_cell(coord)
+	
+	objects_destoryed.append({
+		"move_occurence" : moves,
+		"pos" : coord,
+		"original_v2i_object" : atlas,
+		"obj_type" : obj_type
+	})
 
 func checkButtons(object : OBJECTS) -> void:
 	if object == OBJECTS.BUTTON_GREEN:
@@ -319,27 +365,27 @@ func checkButtons(object : OBJECTS) -> void:
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
 				if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
-					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
-							$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 	elif object == OBJECTS.BUTTON_YELLOW:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
 				if atlas.x == OBJECTS.GATE_YELLOW_H_CLOSED || atlas.x == OBJECTS.GATE_YELLOW_V_CLOSED:
-					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_YELLOW_H_OPEN || atlas.x == OBJECTS.GATE_YELLOW_V_OPEN:
-					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 	elif object == OBJECTS.BUTTON_AQUA:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
 				if atlas.x == OBJECTS.GATE_AQUA_H_CLOSED || atlas.x == OBJECTS.GATE_AQUA_V_CLOSED:
-					$Objects.set_cell(pos, 1, atlas + Vector2i.RIGHT)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
-					$Objects.set_cell(pos, 1, atlas + Vector2i.LEFT)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 
 func win_show() -> void:
 	win = true
