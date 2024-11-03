@@ -33,8 +33,15 @@ enum OBJECTS {
 }
 
 enum MOVABLES {
+	UNMOVABLE,
 	PLAYER,
 	PUSH
+}
+
+enum COLLIDE {
+	COLLIDE,
+	NONE,
+	MOVABLE
 }
 
 const GRID_SIZE := 64
@@ -72,13 +79,16 @@ func _ready() -> void:
 		
 		if child_name.begins_with("Player"):
 			type = MOVABLES.PLAYER
-		
+		elif child_name.begins_with("Crate"):
+			type = MOVABLES.PUSH
 		
 		if child_name.ends_with("Red"):
 			color = COLOR.RED
 		elif child_name.ends_with("Blue"):
 			color = COLOR.BLUE
 			shader_node = get_node(child_name.replace("Blue", "Red"))
+		elif child_name.ends_with("Gray"):
+			color = COLOR.GRAY
 		
 		var obj := {
 			"node": child,
@@ -91,7 +101,10 @@ func _ready() -> void:
 		}
 		movables.append(obj)
 		
-		child.scale = Vector2.ONE * 0.45
+		if type == MOVABLES.PLAYER:
+			child.scale = Vector2.ONE * 0.45
+		elif type == MOVABLES.PUSH:
+			child.scale = Vector2.ONE * 2
 		child.position = coord2pos(obj.pos)
 	
 	for y in range(SEARCH_SIZE.y):
@@ -141,32 +154,49 @@ func _process(delta: float) -> void:
 		
 		# Detect movement
 		var move_intended := false
-		if (!win && !defeat):
+		if !win && !defeat:
+			var offset := Vector2i.ZERO
 			if Input.is_action_just_pressed("Up"):
 				move_intended = true
-				for obj in movables:
-					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
-						obj.pos.y -= 1
-						moved = true
+				offset.y = -1
 			elif Input.is_action_just_pressed("Down"):
 				move_intended = true
-				for obj in movables:
-					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
-						obj.pos.y += 1
-						moved = true
+				offset.y = 1
 			elif Input.is_action_just_pressed("Left"):
 				move_intended = true
-				for obj in movables:
-					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
-						obj.pos.x -= 1
-						moved = true
+				offset.x = -1
 			elif Input.is_action_just_pressed("Right"):
 				move_intended = true
+				offset.x = 1
+			
+			if move_intended:
+				var move := func (stack, this) -> bool:
+					var obj: Dictionary = stack[-1]
+					var new_pos: Vector2i = obj.pos + offset
+					var collide := can_move(new_pos, obj.color)
+					if collide == COLLIDE.NONE:
+						for movable in stack:
+							movable.pos += offset
+						return true
+					elif collide == COLLIDE.MOVABLE:
+						for movable in movables:
+							if movable.pos == new_pos && movable.color & obj.color:
+								stack.append(movable)
+								return this.call(stack, this)
+								
+						print("Error happened in collision detection")
+						return false
+					elif collide == COLLIDE.COLLIDE:
+						return false
+					
+					print("Encountered unknown collide type!")
+					return false
+					
 				for obj in movables:
-					if obj.type == MOVABLES.PLAYER && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
-						obj.pos.x += 1
-						moved = true
-			elif Input.is_action_just_pressed("Wait"):
+					if obj.type == MOVABLES.PLAYER:
+						moved = move.call([obj], move) || move
+			
+			if Input.is_action_just_pressed("Wait"):
 				move_intended = true
 		
 		# Check for belts
@@ -174,16 +204,16 @@ func _process(delta: float) -> void:
 			if move_intended && obj.type == MOVABLES.PLAYER:
 				var object := check_object(obj.moves[-1], obj.color)
 				
-				if object == OBJECTS.BELT_UP && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color):
+				if object == OBJECTS.BELT_UP && can_move(Vector2i(obj.pos.x, obj.pos.y - 1), obj.color) == COLLIDE.NONE:
 					obj.pos.y -= 1
 					moved = true
-				if object == OBJECTS.BELT_DOWN && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color):
+				if object == OBJECTS.BELT_DOWN && can_move(Vector2i(obj.pos.x, obj.pos.y + 1), obj.color) == COLLIDE.NONE:
 					obj.pos.y += 1
 					moved = true
-				if object == OBJECTS.BELT_LEFT && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color):
+				if object == OBJECTS.BELT_LEFT && can_move(Vector2i(obj.pos.x - 1, obj.pos.y), obj.color) == COLLIDE.NONE:
 					obj.pos.x -= 1
 					moved = true
-				if object == OBJECTS.BELT_RIGHT && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color):
+				if object == OBJECTS.BELT_RIGHT && can_move(Vector2i(obj.pos.x + 1, obj.pos.y), obj.color) == COLLIDE.NONE:
 					obj.pos.x += 1
 					moved = true
 		
@@ -194,7 +224,7 @@ func _process(delta: float) -> void:
 				obj.moves.append(obj.pos)
 			returnPos()
 		
-		if (!win):
+		if !win:
 			# Undo
 			if Input.is_action_just_pressed("Undo") && moves > 0:
 				for obj in movables:
@@ -229,7 +259,7 @@ func _process(delta: float) -> void:
 				returnPos()
 				
 				# defeat
-				if (defeat):
+				if defeat:
 					defeat_hide()
 				
 		
@@ -302,23 +332,30 @@ func pos2coord(pos: Vector2) -> Vector2i:
 	return Vector2i(floor(pos / GRID_SIZE))
 
 # Checks for a wall collision
-func can_move(coord: Vector2i, color: COLOR) -> bool:
+func can_move(coord: Vector2i, color: COLOR) -> COLLIDE:
 	if $Walls.get_cell_atlas_coords(coord).y < 4:
 		# wall
-		return false
+		return COLLIDE.COLLIDE
 	elif $Walls.get_cell_atlas_coords(coord).y < 8:
 		# red wall
 		if color & COLOR.RED:
-			return false
+			return COLLIDE.COLLIDE
 	elif $Walls.get_cell_atlas_coords(coord).y < 12:
 		# blue wall
 		if color & COLOR.BLUE:
-			return false
+			return COLLIDE.COLLIDE
+	
 	# check for gates
 	var obj = check_object(coord, color)
 	if obj == OBJECTS.GATE_GREEN_H_CLOSED || obj == OBJECTS.GATE_GREEN_V_CLOSED || obj == OBJECTS.GATE_YELLOW_H_CLOSED || obj == OBJECTS.GATE_YELLOW_V_CLOSED || obj == OBJECTS.GATE_AQUA_H_CLOSED || obj == OBJECTS.GATE_AQUA_V_CLOSED:
-		return false
-	return true
+		return COLLIDE.COLLIDE
+	
+	# check for crates
+	for movable in movables:
+		if movable.pos == coord && movable.color & color:
+			return COLLIDE.MOVABLE
+	
+	return COLLIDE.NONE
 
 # Checks for an object that is the same color
 func check_object(coord: Vector2i, color: COLOR) -> OBJECTS:
