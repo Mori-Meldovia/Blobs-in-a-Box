@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_vn5sc"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_fmjcu"]
-[ext_resource type="Texture2D" uid="uid://d18by6pbvrc16" path="res://assets/tilemap/Objects.png" id="3_fdq0e"]
+[ext_resource type="Texture2D" uid="uid://722qp4bbo73s" path="res://assets/tilemap/Objects .png" id="3_sjflm"]
 [ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="4_vbmrn"]
 [ext_resource type="Shader" path="res://purple.gdshader" id="5_jd17v"]
 [ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="6_prle1"]
@@ -265,8 +265,8 @@ terrain_set_0/terrain_2/name = "Blue Wall"
 terrain_set_0/terrain_2/color = Color(0.578879, 0.460658, 0, 1)
 sources/2 = SubResource("TileSetAtlasSource_2kmss")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ct15l"]
-texture = ExtResource("3_fdq0e")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2uxl5"]
+texture = ExtResource("3_sjflm")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -296,6 +296,7 @@ texture_region_size = Vector2i(32, 32)
 20:1/0 = 0
 21:1/0 = 0
 22:1/0 = 0
+23:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
@@ -319,6 +320,7 @@ texture_region_size = Vector2i(32, 32)
 20:2/0 = 0
 21:2/0 = 0
 22:2/0 = 0
+23:2/0 = 0
 0:3/0 = 0
 1:3/0 = 0
 2:3/0 = 0
@@ -342,10 +344,11 @@ texture_region_size = Vector2i(32, 32)
 20:3/0 = 0
 21:3/0 = 0
 22:3/0 = 0
+23:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_7wl2r"]
 tile_size = Vector2i(32, 32)
-sources/3 = SubResource("TileSetAtlasSource_ct15l")
+sources/5 = SubResource("TileSetAtlasSource_2uxl5")
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f8lb6"]
 load_path = "res://.godot/imported/red.png-92224c10c258f02984efc03eb2d4d120.ctex"
@@ -367,7 +370,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAPAAcAAwAAAAMAAAAPAAIAAwAAAAMAAAAKAAIAAwADAAMAAAAJAAUAAwACAAMAAAAIAAQAAwAGAAMAAAAJAAcAAwABAAIAAAACAAQAAwABAAAAAAAFAAIAAwASAAEAAAAGAAIAAwADAAMAAAA=")
+tile_map_data = PackedByteArray("AAAPAAcABQAAAAAAAAAPAAIABQAAAAAAAAAJAAUABQACAAMAAAAIAAQABQAGAAEAAAAGAAIABQADAAEAAAAHAAcABQAXAAEAAAAKAAIABQAXAAEAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="CrateGray" type="Sprite2D" parent="."]

@@ -29,7 +29,9 @@ enum OBJECTS {
 	BELT_RIGHT,
 	BELT_DOWN,
 	BELT_LEFT,
-	BELT_UP
+	BELT_UP,
+	DUPLICATORS,
+	TELEPORTER,
 }
 
 enum MOVABLES {
@@ -146,6 +148,7 @@ func _ready() -> void:
 var t := 1.
 func _process(delta: float) -> void:
 	var moved := false
+	var offset := Vector2i.ZERO
 	
 	if t >= 1:
 		# Store last position for interpolation
@@ -154,8 +157,8 @@ func _process(delta: float) -> void:
 		
 		# Detect movement
 		var move_intended := false
+		
 		if !win && !defeat:
-			var offset := Vector2i.ZERO
 			if Input.is_action_just_pressed("Up"):
 				move_intended = true
 				offset.y = -1
@@ -272,11 +275,10 @@ func _process(delta: float) -> void:
 		
 			# Shader
 			if obj.shader_node:
-				var offset : Vector2 = obj.node.position - obj.shader_node.position
+				var offset_pos : Vector2 = obj.node.position - obj.shader_node.position
 				obj.node.material.set("shader_parameter/offset", offset * 2)
 	
 	# Check for objects
-	
 	for obj in movables:
 		if moved && obj.moves[-1] != obj.moves[-2]:
 			var object := check_object(obj.pos, obj.color)
@@ -288,10 +290,10 @@ func _process(delta: float) -> void:
 			
 			# Skull
 			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
-				
-				
 				defeat_show(obj)
 			
+			if object == OBJECTS.TELEPORTER && obj.type == MOVABLES.PLAYER:
+				teleport(obj)
 			# Buttons
 			checkButtons(object)
 	
@@ -423,6 +425,27 @@ func checkButtons(object : OBJECTS) -> void:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+
+func teleport(obj) -> void:
+	var teleported = false
+	for y in range(SEARCH_SIZE.y):
+		for x in range(SEARCH_SIZE.x):
+			var pos := Vector2i(x, y)
+			var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+			if atlas.x == OBJECTS.TELEPORTER && pos != obj.pos && !teleported:
+				obj.pos.x = pos.x
+				obj.pos.y = pos.y
+				
+				# moved
+				t = 0
+				for objs in movables:
+					if (obj == objs):
+						print("YES")
+						objs.moves.pop_back();
+						objs.moves.append(obj.pos)
+				returnPos()
+				teleported = true
+	return
 
 func win_show() -> void:
 	win = true
