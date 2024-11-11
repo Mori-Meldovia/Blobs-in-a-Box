@@ -281,6 +281,7 @@ func _process(delta: float) -> void:
 	# Check for objects
 	for obj in movables:
 		if moved && obj.moves[-1] != obj.moves[-2]:
+					
 			var object := check_object(obj.pos, obj.color)
 			
 			# Star
@@ -292,8 +293,9 @@ func _process(delta: float) -> void:
 			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
 				defeat_show(obj)
 			
-			if object == OBJECTS.TELEPORTER && obj.type == MOVABLES.PLAYER:
-				teleport(obj)
+			# Teleporter
+			if object == OBJECTS.TELEPORTER && obj.type == MOVABLES.PLAYER || obj.type == MOVABLES.PUSH:
+				teleport(obj, object)
 			# Buttons
 			checkButtons(object)
 	
@@ -322,8 +324,6 @@ func _process(delta: float) -> void:
 	
 	if !flags_left && no_of_stars == 0:
 		win_show()
-
-
 
 # Converts grid coordinate to position vector
 func coord2pos(coord: Vector2i) -> Vector2:
@@ -426,25 +426,34 @@ func checkButtons(object : OBJECTS) -> void:
 				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 
-func teleport(obj) -> void:
-	var teleported = false
+func teleport(obj, object : OBJECTS) -> void:
+	var teleporers : Array[Vector2i]
 	for y in range(SEARCH_SIZE.y):
 		for x in range(SEARCH_SIZE.x):
 			var pos := Vector2i(x, y)
 			var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-			if atlas.x == OBJECTS.TELEPORTER && pos != obj.pos && !teleported:
-				obj.pos.x = pos.x
-				obj.pos.y = pos.y
+			if atlas.x == OBJECTS.TELEPORTER:
+				teleporers.append(pos)
+	
+	print(teleporers)
+	var in_teleporter = false
+	for currTele in teleporers:
+		if obj.pos == currTele:
+			in_teleporter = true
+	
+	if in_teleporter:
+		for currTele in teleporers:
+			if obj.pos != currTele:
+				obj.pos.x = currTele.x
+				obj.pos.y = currTele.y
 				
 				# moved
 				t = 0
 				for objs in movables:
 					if (obj == objs):
-						print("YES")
 						objs.moves.pop_back();
 						objs.moves.append(obj.pos)
 				returnPos()
-				teleported = true
 	return
 
 func win_show() -> void:
