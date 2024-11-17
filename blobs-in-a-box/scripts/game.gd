@@ -14,24 +14,24 @@ enum OBJECTS {
 	BUTTON_GREEN,
 	BUTTON_YELLOW,
 	BUTTON_AQUA,
-	GATE_GREEN_H_CLOSED,
-	GATE_GREEN_H_OPEN,
-	GATE_GREEN_V_CLOSED,
-	GATE_GREEN_V_OPEN,
-	GATE_YELLOW_H_CLOSED,
-	GATE_YELLOW_H_OPEN,
-	GATE_YELLOW_V_CLOSED,
-	GATE_YELLOW_V_OPEN,
-	GATE_AQUA_H_CLOSED,
-	GATE_AQUA_H_OPEN,
-	GATE_AQUA_V_CLOSED,
-	GATE_AQUA_V_OPEN,
+	LEVER_GREEN_LEFT,
+	LEVER_GREEN_RIGHT,
+	LEVER_YELLOW_LEFT,
+	LEVER_YELLOW_RIGHT,
+	LEVER_AQUA_LEFT,
+	LEVER_AQUA_RIGHT,
+	GATE_GREEN_CLOSED,
+	GATE_GREEN_OPEN,
+	GATE_YELLOW_CLOSED,
+	GATE_YELLOW_OPEN,
+	GATE_AQUA_CLOSED,
+	GATE_AQUA_OPEN,
 	BELT_RIGHT,
 	BELT_DOWN,
 	BELT_LEFT,
 	BELT_UP,
-	DUPLICATORS,
 	TELEPORTER,
+	DUPLICATOR
 }
 
 enum MOVABLES {
@@ -56,6 +56,12 @@ var moves := 0
 var movables : Array[Dictionary] = []
 var flags : Array[Dictionary] = [] # "pos" and "color" and "reached"
 var objects_destoryed : Array[Dictionary] = [] # "move_occurence", "pos", "original_v2i_object", "obj_type"
+var green_buttons := []
+var yellow_buttons := []
+var aqua_buttons := []
+var green_on := false
+var yellow_on := false
+var aqua_on := false
 var no_of_stars := 0
 var win := false
 var defeat := false
@@ -115,8 +121,7 @@ func _ready() -> void:
 			var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
 			
 			# Make a count of all flags and stars
-			if atlas.x == 0:
-				# is a flag
+			if atlas.x == OBJECTS.FLAG:
 				if atlas.y == 0:
 					# purple flag
 					flags.append({
@@ -135,13 +140,70 @@ func _ready() -> void:
 						"color": atlas.y,
 						"reached": false
 					})
-			if atlas.x == 1:
-				# is a star
+			elif atlas.x == OBJECTS.STAR:
 				if atlas.y == 0:
 					# purple star
 					no_of_stars += 2
 				else:
 					no_of_stars += 1
+			elif atlas.x == OBJECTS.BUTTON_GREEN:
+				if atlas.y == 0:
+					# purple button
+					green_buttons.append({
+						"pos": pos,
+						"color": COLOR.BLUE,
+						"active": false
+					});
+					green_buttons.append({
+						"pos": pos,
+						"color": COLOR.RED,
+						"active": false
+					});
+				else:
+					green_buttons.append({
+						"pos": pos,
+						"color": atlas.y,
+						"active": false
+					});
+			elif atlas.x == OBJECTS.BUTTON_YELLOW:
+				if atlas.y == 0:
+					# purple button
+					yellow_buttons.append({
+						"pos": pos,
+						"color": COLOR.BLUE,
+						"active": false
+					});
+					yellow_buttons.append({
+						"pos": pos,
+						"color": COLOR.RED,
+						"active": false
+					});
+				else:
+					yellow_buttons.append({
+						"pos": pos,
+						"color": atlas.y,
+						"active": false
+					});
+			elif atlas.x == OBJECTS.BUTTON_AQUA:
+				if atlas.y == 0:
+					# purple button
+					aqua_buttons.append({
+						"pos": pos,
+						"color": COLOR.BLUE,
+						"active": false
+					});
+					aqua_buttons.append({
+						"pos": pos,
+						"color": COLOR.RED,
+						"active": false
+					});
+				else:
+					aqua_buttons.append({
+						"pos": pos,
+						"color": atlas.y,
+						"active": false
+					});
+			
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -234,8 +296,8 @@ func _process(delta: float) -> void:
 					
 					var object := check_object(obj.pos, obj.color)
 					
-					# Buttons
-					checkButtons(object)
+					# Buttons and levers
+					checkLevers(object)
 					
 					# Players
 					obj.moves.pop_back()
@@ -276,41 +338,116 @@ func _process(delta: float) -> void:
 			# Shader
 			if obj.shader_node:
 				var offset_pos : Vector2 = obj.node.position - obj.shader_node.position
-				obj.node.material.set("shader_parameter/offset", offset * 2)
+				obj.node.material.set("shader_parameter/offset", offset_pos * 2)
+	
+	# Reset buttons
+	if moved:
+		for button in green_buttons:
+			button.active = false
+		for button in yellow_buttons:
+			button.active = false
+		for button in aqua_buttons:
+			button.active = false
 	
 	# Check for objects
 	for obj in movables:
-		if moved && obj.moves[-1] != obj.moves[-2]:
-					
+		if moved:
 			var object := check_object(obj.pos, obj.color)
 			
-			# Star
-			if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
-				destroy_object(obj.pos, obj.color, OBJECTS.STAR)
-				no_of_stars -= 1
+			if obj.moves[-1] != obj.moves[-2]:
+				# Star
+				if object == OBJECTS.STAR && obj.type == MOVABLES.PLAYER:
+					destroy_object(obj.pos, obj.color, OBJECTS.STAR)
+					no_of_stars -= 1
+				
+				# Skull
+				elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
+					defeat_show(obj)
+				
+				# Teleporter
+				if object == OBJECTS.TELEPORTER && obj.type == MOVABLES.PLAYER || obj.type == MOVABLES.PUSH:
+					teleport(obj, object)
+				
+				# Levers
+				checkLevers(object)
 			
-			# Skull
-			elif object == OBJECTS.SKULL && obj.type == MOVABLES.PLAYER:
-				defeat_show(obj)
+			# Buttons (check regardless of moved or not)
 			
-			# Teleporter
-			if object == OBJECTS.TELEPORTER && obj.type == MOVABLES.PLAYER || obj.type == MOVABLES.PUSH:
-				teleport(obj, object)
-			# Buttons
-			checkButtons(object)
+			if object == OBJECTS.BUTTON_GREEN:
+				for button in green_buttons:
+					if button.pos == obj.pos:
+						button.active = true
+			elif object == OBJECTS.BUTTON_YELLOW:
+				for button in yellow_buttons:
+					if button.pos == obj.pos:
+						button.active = true
+			elif object == OBJECTS.BUTTON_AQUA:
+				for button in aqua_buttons:
+					if button.pos == obj.pos:
+						button.active = true
+						
 	
-	var buttons_rehit : Array = []
-	var total_num_on_button = 0
-	for obj1 in movables:
-		for obj2 in movables:
-			var is_button_G = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_GREEN
-			var is_button_Y = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_YELLOW
-			var is_button_A = check_object(obj2.pos, obj1.color) == OBJECTS.BUTTON_AQUA
-			if obj2 != obj1 && obj2.pos == obj1.pos && (is_button_G || is_button_Y || is_button_A):
-				total_num_on_button += 1
+	# count the buttons
+	if moved:
+		var this_green_on := true
+		for button in green_buttons:
+			print(button)
+			if !button.active:
+				this_green_on = false
+		print(this_green_on)
+		if this_green_on != green_on:
+			for y in range(SEARCH_SIZE.y):
+				for x in range(SEARCH_SIZE.x):
+					var pos := Vector2i(x, y)
+					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+					if atlas.x == OBJECTS.GATE_GREEN_CLOSED:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+					elif atlas.x == OBJECTS.GATE_GREEN_OPEN:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+			green_on = this_green_on;
+			
+		var this_yellow_on := true
+		for button in yellow_buttons:
+			if !button.active:
+				this_yellow_on = false
+		if this_yellow_on != yellow_on:
+			for y in range(SEARCH_SIZE.y):
+				for x in range(SEARCH_SIZE.x):
+					var pos := Vector2i(x, y)
+					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+					if atlas.x == OBJECTS.GATE_YELLOW_CLOSED:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+					elif atlas.x == OBJECTS.GATE_YELLOW_OPEN:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+			yellow_on = this_yellow_on;
 		
-		if total_num_on_button > 1:
-			checkButtons(check_object(obj1.pos, obj1.color))
+		var this_aqua_on := true
+		for button in aqua_buttons:
+			if !button.active:
+				this_aqua_on = false
+		if this_aqua_on != aqua_on:
+			for y in range(SEARCH_SIZE.y):
+				for x in range(SEARCH_SIZE.x):
+					var pos := Vector2i(x, y)
+					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+					if atlas.x == OBJECTS.GATE_AQUA_CLOSED:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+					elif atlas.x == OBJECTS.GATE_AQUA_OPEN:
+						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+			aqua_on = this_aqua_on;
+	
+	#var levers_rehit : Array = []
+	#var total_num_on_lever = 0
+	#for obj1 in movables:
+		#for obj2 in movables:
+			#var is_lever_G = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_GREEN_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_GREEN_RIGHT
+			#var is_lever_Y = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_YELLOW_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_YELLOW_RIGHT
+			#var is_lever_A = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_AQUA_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_AQUA_RIGHT
+			#if obj2 != obj1 && obj2.pos == obj1.pos && (is_lever_G || is_lever_Y || is_lever_A):
+				#total_num_on_lever += 1
+		#
+		#if total_num_on_lever > 1:
+			#checkLevers(check_object(obj1.pos, obj1.color))
 	
 	# Win condition
 	var flags_left := false
@@ -349,7 +486,7 @@ func can_move(coord: Vector2i, color: COLOR) -> COLLIDE:
 	
 	# check for gates
 	var obj = check_object(coord, color)
-	if obj == OBJECTS.GATE_GREEN_H_CLOSED || obj == OBJECTS.GATE_GREEN_V_CLOSED || obj == OBJECTS.GATE_YELLOW_H_CLOSED || obj == OBJECTS.GATE_YELLOW_V_CLOSED || obj == OBJECTS.GATE_AQUA_H_CLOSED || obj == OBJECTS.GATE_AQUA_V_CLOSED:
+	if obj == OBJECTS.GATE_GREEN_CLOSED || obj == OBJECTS.GATE_YELLOW_CLOSED || obj == OBJECTS.GATE_AQUA_CLOSED:
 		return COLLIDE.COLLIDE
 	
 	# check for crates
@@ -397,33 +534,33 @@ func destroy_object(coord: Vector2i, color: COLOR, obj_type : OBJECTS) -> void:
 		"obj_type" : obj_type
 	})
 
-func checkButtons(object : OBJECTS) -> void:
-	if object == OBJECTS.BUTTON_GREEN:
+func checkLevers(object : OBJECTS) -> void:
+	if object == OBJECTS.LEVER_GREEN_LEFT || object == OBJECTS.LEVER_GREEN_RIGHT:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				if atlas.x == OBJECTS.GATE_GREEN_H_CLOSED || atlas.x == OBJECTS.GATE_GREEN_V_CLOSED:
+				if atlas.x == OBJECTS.GATE_GREEN_CLOSED || atlas.x == OBJECTS.LEVER_GREEN_LEFT:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-				elif atlas.x == OBJECTS.GATE_GREEN_H_OPEN || atlas.x == OBJECTS.GATE_GREEN_V_OPEN:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
-	elif object == OBJECTS.BUTTON_YELLOW:
-		for y in range(SEARCH_SIZE.y):
-			for x in range(SEARCH_SIZE.x):
-				var pos := Vector2i(x, y)
-				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				if atlas.x == OBJECTS.GATE_YELLOW_H_CLOSED || atlas.x == OBJECTS.GATE_YELLOW_V_CLOSED:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-				elif atlas.x == OBJECTS.GATE_YELLOW_H_OPEN || atlas.x == OBJECTS.GATE_YELLOW_V_OPEN:
+				elif atlas.x == OBJECTS.GATE_GREEN_OPEN || atlas.x == OBJECTS.LEVER_GREEN_RIGHT:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
-	elif object == OBJECTS.BUTTON_AQUA:
+	elif object == OBJECTS.LEVER_YELLOW_LEFT || object == OBJECTS.LEVER_YELLOW_RIGHT:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				if atlas.x == OBJECTS.GATE_AQUA_H_CLOSED || atlas.x == OBJECTS.GATE_AQUA_V_CLOSED:
+				if atlas.x == OBJECTS.GATE_YELLOW_CLOSED || atlas.x == OBJECTS.LEVER_YELLOW_LEFT:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-				elif atlas.x == OBJECTS.GATE_AQUA_H_OPEN || atlas.x == OBJECTS.GATE_AQUA_V_OPEN:
+				elif atlas.x == OBJECTS.GATE_YELLOW_OPEN || atlas.x == OBJECTS.LEVER_YELLOW_RIGHT:
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+	elif object == OBJECTS.LEVER_AQUA_LEFT || object == OBJECTS.LEVER_AQUA_RIGHT:
+		for y in range(SEARCH_SIZE.y):
+			for x in range(SEARCH_SIZE.x):
+				var pos := Vector2i(x, y)
+				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+				if atlas.x == OBJECTS.GATE_AQUA_CLOSED || atlas.x == OBJECTS.LEVER_AQUA_LEFT:
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+				elif atlas.x == OBJECTS.GATE_AQUA_OPEN || atlas.x == OBJECTS.LEVER_AQUA_RIGHT:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 
 func teleport(obj, object : OBJECTS) -> void:
@@ -435,7 +572,7 @@ func teleport(obj, object : OBJECTS) -> void:
 			if atlas.x == OBJECTS.TELEPORTER:
 				teleporers.append(pos)
 	
-	print(teleporers)
+	#print(teleporers)
 	var in_teleporter = false
 	for currTele in teleporers:
 		if obj.pos == currTele:
