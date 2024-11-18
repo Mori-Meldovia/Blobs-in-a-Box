@@ -391,10 +391,8 @@ func _process(delta: float) -> void:
 	if moved:
 		var this_green_on := true
 		for button in green_buttons:
-			print(button)
 			if !button.active:
 				this_green_on = false
-		print(this_green_on)
 		if this_green_on != green_on:
 			for y in range(SEARCH_SIZE.y):
 				for x in range(SEARCH_SIZE.x):
@@ -454,7 +452,7 @@ func _process(delta: float) -> void:
 	for flag in flags:
 		flag.reached = false
 		for obj in movables:
-			if obj.pos == flag.pos && obj.color & flag.color:
+			if obj.type == MOVABLES.PLAYER && obj.pos == flag.pos && obj.color & flag.color:
 				flag.reached = true
 		if !flag.reached:
 			flags_left = true
