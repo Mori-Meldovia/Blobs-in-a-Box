@@ -389,63 +389,53 @@ func _process(delta: float) -> void:
 	
 	# count the buttons
 	if moved:
-		var this_green_on := true
-		for button in green_buttons:
-			if !button.active:
-				this_green_on = false
-		if this_green_on != green_on:
-			for y in range(SEARCH_SIZE.y):
-				for x in range(SEARCH_SIZE.x):
-					var pos := Vector2i(x, y)
-					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-					if atlas.x == OBJECTS.GATE_GREEN_CLOSED:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-					elif atlas.x == OBJECTS.GATE_GREEN_OPEN:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
-			green_on = this_green_on;
-			
-		var this_yellow_on := true
-		for button in yellow_buttons:
-			if !button.active:
-				this_yellow_on = false
-		if this_yellow_on != yellow_on:
-			for y in range(SEARCH_SIZE.y):
-				for x in range(SEARCH_SIZE.x):
-					var pos := Vector2i(x, y)
-					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-					if atlas.x == OBJECTS.GATE_YELLOW_CLOSED:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-					elif atlas.x == OBJECTS.GATE_YELLOW_OPEN:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
-			yellow_on = this_yellow_on;
+		if green_buttons.size() > 0:
+			var this_green_on := true
+			for button in green_buttons:
+				if !button.active:
+					this_green_on = false
+			if this_green_on != green_on:
+				for y in range(SEARCH_SIZE.y):
+					for x in range(SEARCH_SIZE.x):
+						var pos := Vector2i(x, y)
+						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+						if atlas.x == OBJECTS.GATE_GREEN_CLOSED:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+						elif atlas.x == OBJECTS.GATE_GREEN_OPEN:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+				green_on = this_green_on;
 		
-		var this_aqua_on := true
-		for button in aqua_buttons:
-			if !button.active:
-				this_aqua_on = false
-		if this_aqua_on != aqua_on:
-			for y in range(SEARCH_SIZE.y):
-				for x in range(SEARCH_SIZE.x):
-					var pos := Vector2i(x, y)
-					var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-					if atlas.x == OBJECTS.GATE_AQUA_CLOSED:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
-					elif atlas.x == OBJECTS.GATE_AQUA_OPEN:
-						$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
-			aqua_on = this_aqua_on;
-	
-	#var levers_rehit : Array = []
-	#var total_num_on_lever = 0
-	#for obj1 in movables:
-		#for obj2 in movables:
-			#var is_lever_G = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_GREEN_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_GREEN_RIGHT
-			#var is_lever_Y = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_YELLOW_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_YELLOW_RIGHT
-			#var is_lever_A = check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_AQUA_LEFT || check_object(obj2.pos, obj1.color) == OBJECTS.LEVER_AQUA_RIGHT
-			#if obj2 != obj1 && obj2.pos == obj1.pos && (is_lever_G || is_lever_Y || is_lever_A):
-				#total_num_on_lever += 1
-		#
-		#if total_num_on_lever > 1:
-			#checkLevers(check_object(obj1.pos, obj1.color))
+		if yellow_buttons.size() > 0:
+			var this_yellow_on := true
+			for button in yellow_buttons:
+				if !button.active:
+					this_yellow_on = false
+			if this_yellow_on != yellow_on:
+				for y in range(SEARCH_SIZE.y):
+					for x in range(SEARCH_SIZE.x):
+						var pos := Vector2i(x, y)
+						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+						if atlas.x == OBJECTS.GATE_YELLOW_CLOSED:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+						elif atlas.x == OBJECTS.GATE_YELLOW_OPEN:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+				yellow_on = this_yellow_on;
+		
+		if green_buttons.size() > 0:
+			var this_aqua_on := true
+			for button in aqua_buttons:
+				if !button.active:
+					this_aqua_on = false
+			if this_aqua_on != aqua_on:
+				for y in range(SEARCH_SIZE.y):
+					for x in range(SEARCH_SIZE.x):
+						var pos := Vector2i(x, y)
+						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+						if atlas.x == OBJECTS.GATE_AQUA_CLOSED:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+						elif atlas.x == OBJECTS.GATE_AQUA_OPEN:
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+				aqua_on = this_aqua_on;
 	
 	# Win condition
 	var flags_left := false
