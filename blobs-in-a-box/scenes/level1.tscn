@@ -1,11 +1,19 @@
-[gd_scene load_steps=12 format=4 uid="uid://b2g7dwaem7t6x"]
+[gd_scene load_steps=29 format=4 uid="uid://b2g7dwaem7t6x"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_tykvs"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_yaypt"]
 [ext_resource type="Texture2D" uid="uid://bvuia3sthaw0" path="res://assets/tilemap/Objects.png" id="3_ftg5x"]
-[ext_resource type="Shader" path="res://purple.gdshader" id="5_0iu3c"]
-[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="8_bt0jg"]
-[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="9_1mnky"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="5_jbgyk"]
+[ext_resource type="Texture2D" uid="uid://k5hqcy2mt7tg" path="res://assets/sprite/red-sprite/red-down.png" id="6_ja0pw"]
+[ext_resource type="Texture2D" uid="uid://b1h8qfqsvgjjf" path="res://assets/sprite/red-sprite/red-idle.png" id="6_mm8pn"]
+[ext_resource type="Texture2D" uid="uid://bbomb60sl2cx6" path="res://assets/sprite/red-sprite/red-left.png" id="7_wyv68"]
+[ext_resource type="Texture2D" uid="uid://cfbrr3spjelw6" path="res://assets/sprite/red-sprite/red-right.png" id="8_u0wvr"]
+[ext_resource type="Texture2D" uid="uid://cr8dpelcffj86" path="res://assets/sprite/red-sprite/red-up.png" id="9_v1ffi"]
+[ext_resource type="Texture2D" uid="uid://cqlkyvic0xoh8" path="res://assets/sprite/blue-sprite/blue-idle.png" id="10_apyi1"]
+[ext_resource type="Texture2D" uid="uid://bo67s72c1vsow" path="res://assets/sprite/blue-sprite/blue-down.png" id="11_obe3j"]
+[ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="12_7te5j"]
+[ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="13_2fhn7"]
+[ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="14_qqrnw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_yaypt")
@@ -348,10 +356,141 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/3 = SubResource("TileSetAtlasSource_bgidb")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yc8gt"]
-shader = ExtResource("5_0iu3c")
-shader_parameter/offset = Vector2(-128, 0)
-shader_parameter/texture2 = ExtResource("8_bt0jg")
+[sub_resource type="AtlasTexture" id="AtlasTexture_37dhj"]
+atlas = ExtResource("6_mm8pn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4yf7"]
+atlas = ExtResource("6_mm8pn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b14v4"]
+atlas = ExtResource("6_mm8pn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwtow"]
+atlas = ExtResource("6_mm8pn")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_km5l8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37dhj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4yf7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b14v4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rwtow")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ja0pw")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_wyv68")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_u0wvr")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_v1ffi")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0vnq"]
+atlas = ExtResource("10_apyi1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m73nx"]
+atlas = ExtResource("10_apyi1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l4df"]
+atlas = ExtResource("10_apyi1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxf5t"]
+atlas = ExtResource("10_apyi1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dvc74"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0vnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m73nx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l4df")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxf5t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_obe3j")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_7te5j")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_2fhn7")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_qqrnw")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_tykvs")
@@ -368,16 +507,20 @@ scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AAAPAAIAAwAAAAEAAAAOAAcAAwAAAAIAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
-[node name="PlayerRed" type="Sprite2D" parent="."]
-position = Vector2(159, 478)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("8_bt0jg")
+[node name="PlayerRed" type="AnimatedSprite2D" parent="."]
+position = Vector2(165, 482)
+scale = Vector2(2.54688, 2.7518)
+sprite_frames = SubResource("SpriteFrames_km5l8")
+frame = 2
+frame_progress = 0.99856
+script = ExtResource("5_jbgyk")
 
-[node name="PlayerBlue" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_yc8gt")
-position = Vector2(156, 157)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("9_1mnky")
+[node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
+position = Vector2(155, 163)
+scale = Vector2(2.625, 3.0625)
+sprite_frames = SubResource("SpriteFrames_dvc74")
+animation = &"left"
+script = ExtResource("5_jbgyk")
 
 [node name="Win" type="Label" parent="."]
 offset_left = 460.0

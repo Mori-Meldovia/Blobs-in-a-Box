@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bqn6qau4x5cjf"]
+[gd_scene load_steps=34 format=4 uid="uid://bqn6qau4x5cjf"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_axx2b"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_xf0yn"]
@@ -7,8 +7,17 @@
 [ext_resource type="Shader" path="res://purple.gdshader" id="5_2oysl"]
 [ext_resource type="Texture2D" uid="uid://de45a876d6ahj" path="res://assets/sprite/blue_crate.png" id="6_g2mhb"]
 [ext_resource type="Texture2D" uid="uid://b7yc3hcpvdfnn" path="res://assets/sprite/gray_crate.png" id="7_gesvx"]
-[ext_resource type="Texture2D" uid="uid://77wd3ua4gyr7" path="res://assets/sprite/red.png" id="8_p4kop"]
-[ext_resource type="Texture2D" uid="uid://4p756yqoh2c" path="res://assets/sprite/blue.png" id="9_igios"]
+[ext_resource type="Texture2D" uid="uid://b1h8qfqsvgjjf" path="res://assets/sprite/red-sprite/red-idle.png" id="8_vs5ap"]
+[ext_resource type="Texture2D" uid="uid://k5hqcy2mt7tg" path="res://assets/sprite/red-sprite/red-down.png" id="9_7vpi4"]
+[ext_resource type="Texture2D" uid="uid://bbomb60sl2cx6" path="res://assets/sprite/red-sprite/red-left.png" id="10_ateja"]
+[ext_resource type="Texture2D" uid="uid://cfbrr3spjelw6" path="res://assets/sprite/red-sprite/red-right.png" id="11_ctamt"]
+[ext_resource type="Texture2D" uid="uid://cr8dpelcffj86" path="res://assets/sprite/red-sprite/red-up.png" id="12_hevct"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="13_su3af"]
+[ext_resource type="Texture2D" uid="uid://cqlkyvic0xoh8" path="res://assets/sprite/blue-sprite/blue-idle.png" id="14_gegod"]
+[ext_resource type="Texture2D" uid="uid://bo67s72c1vsow" path="res://assets/sprite/blue-sprite/blue-down.png" id="15_xt6sh"]
+[ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="16_f8rg1"]
+[ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="17_dfqoe"]
+[ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="18_htrwb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_xf0yn")
@@ -356,10 +365,141 @@ shader = ExtResource("5_2oysl")
 shader_parameter/offset = Vector2(0, -100)
 shader_parameter/texture2 = ExtResource("4_orl2g")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yc8gt"]
-shader = ExtResource("5_2oysl")
-shader_parameter/offset = Vector2(-128, 0)
-shader_parameter/texture2 = ExtResource("8_p4kop")
+[sub_resource type="AtlasTexture" id="AtlasTexture_37dhj"]
+atlas = ExtResource("8_vs5ap")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4yf7"]
+atlas = ExtResource("8_vs5ap")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b14v4"]
+atlas = ExtResource("8_vs5ap")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwtow"]
+atlas = ExtResource("8_vs5ap")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wodde"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37dhj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4yf7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b14v4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rwtow")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_7vpi4")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_ateja")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_ctamt")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_hevct")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0vnq"]
+atlas = ExtResource("14_gegod")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m73nx"]
+atlas = ExtResource("14_gegod")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l4df"]
+atlas = ExtResource("14_gegod")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxf5t"]
+atlas = ExtResource("14_gegod")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ohiyg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0vnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m73nx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l4df")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxf5t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_xt6sh")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_f8rg1")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_dfqoe")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_htrwb")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_axx2b")
@@ -395,16 +535,18 @@ position = Vector2(287, 221)
 scale = Vector2(2, 2)
 texture = ExtResource("7_gesvx")
 
-[node name="PlayerRed" type="Sprite2D" parent="."]
-position = Vector2(222, 157)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("8_p4kop")
+[node name="PlayerRed" type="AnimatedSprite2D" parent="."]
+position = Vector2(163, 159)
+scale = Vector2(2.54688, 2.7518)
+sprite_frames = SubResource("SpriteFrames_wodde")
+script = ExtResource("13_su3af")
 
-[node name="PlayerBlue" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_yc8gt")
-position = Vector2(156, 157)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("9_igios")
+[node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
+position = Vector2(224, 162)
+scale = Vector2(2.40313, 2.80365)
+sprite_frames = SubResource("SpriteFrames_ohiyg")
+animation = &"up"
+script = ExtResource("13_su3af")
 
 [node name="Win" type="Label" parent="."]
 offset_left = 460.0

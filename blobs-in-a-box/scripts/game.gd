@@ -76,7 +76,7 @@ func _ready() -> void:
 	
 	# Fetch and load nodes automatically
 	for child in get_children():
-		if child is not Sprite2D:
+		if child is not AnimatedSprite2D:
 			continue
 		
 		var child_name := child.get_name()
@@ -110,7 +110,7 @@ func _ready() -> void:
 		movables.append(obj)
 		
 		if type == MOVABLES.PLAYER:
-			child.scale = Vector2.ONE * 0.45
+			child.scale = Vector2.ONE * 3
 		elif type == MOVABLES.PUSH:
 			child.scale = Vector2.ONE * 2
 		child.position = coord2pos(obj.pos)
