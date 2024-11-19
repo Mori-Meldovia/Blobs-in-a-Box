@@ -219,6 +219,10 @@ func _process(delta: float) -> void:
 	var moved := false
 	var offset := Vector2i.ZERO
 	
+	if Input.is_action_just_pressed("Menu"):
+		get_tree().change_scene_to_file("res://scenes/level_screen.tscn")
+
+	
 	if t >= 1:
 		# Store last position for interpolation
 		for obj in movables:
