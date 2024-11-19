@@ -335,9 +335,13 @@ func _process(delta: float) -> void:
 			# Update positions
 			obj.node.position = obj.last_pos.lerp(coord2pos(obj.pos), t * t * (3 - 2 * t))
 		
+		# DO NOT COLLAPSE THIS
+		for obj in movables:
 			# Shader
 			if obj.shader_node:
 				var offset_pos : Vector2 = obj.node.position - obj.shader_node.position
+				if offset_pos.length() < 0.2:
+					offset_pos = Vector2.ZERO
 				obj.node.material.set("shader_parameter/offset", offset_pos * 2)
 	
 	# Reset buttons
