@@ -436,7 +436,7 @@ animations = [{
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q5xht"]
 shader = ExtResource("5_jd17v")
-shader_parameter/offset = Vector2(-100, 0)
+shader_parameter/offset = Vector2(-1000, 0)
 shader_parameter/texture2 = ExtResource("8_wxeaf")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n0vnq"]
@@ -519,7 +519,6 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAQAAgAAwAAAAMAAAACAAYAAwAWAAEAAAAPAAYAAwAWAAEAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="CrateRed" type="Sprite2D" parent="."]
