@@ -414,11 +414,10 @@ func _process(delta: float) -> void:
 					for x in range(SEARCH_SIZE.x):
 						var pos := Vector2i(x, y)
 						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						var rot = $Objects.get_cell_alternative_tile(pos)
 						if atlas.x == OBJECTS.GATE_GREEN_CLOSED:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 						elif atlas.x == OBJECTS.GATE_GREEN_OPEN:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 				green_on = this_green_on;
 		
 		if yellow_buttons.size() > 0:
@@ -431,11 +430,10 @@ func _process(delta: float) -> void:
 					for x in range(SEARCH_SIZE.x):
 						var pos := Vector2i(x, y)
 						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						var rot = $Objects.get_cell_alternative_tile(pos)
 						if atlas.x == OBJECTS.GATE_YELLOW_CLOSED:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 						elif atlas.x == OBJECTS.GATE_YELLOW_OPEN:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 				yellow_on = this_yellow_on;
 		
 		if green_buttons.size() > 0:
@@ -448,11 +446,10 @@ func _process(delta: float) -> void:
 					for x in range(SEARCH_SIZE.x):
 						var pos := Vector2i(x, y)
 						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-						var rot = $Objects.get_cell_alternative_tile(pos)
 						if atlas.x == OBJECTS.GATE_AQUA_CLOSED:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 						elif atlas.x == OBJECTS.GATE_AQUA_OPEN:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 				aqua_on = this_aqua_on;
 	
 	# Win condition
@@ -546,31 +543,28 @@ func checkLevers(object : OBJECTS) -> void:
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				var rot = $Objects.get_cell_alternative_tile(pos)
 				if atlas.x == OBJECTS.GATE_GREEN_CLOSED || atlas.x == OBJECTS.LEVER_GREEN_LEFT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_GREEN_OPEN || atlas.x == OBJECTS.LEVER_GREEN_RIGHT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 	elif object == OBJECTS.LEVER_YELLOW_LEFT || object == OBJECTS.LEVER_YELLOW_RIGHT:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				var rot = $Objects.get_cell_alternative_tile(pos)
 				if atlas.x == OBJECTS.GATE_YELLOW_CLOSED || atlas.x == OBJECTS.LEVER_YELLOW_LEFT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_YELLOW_OPEN || atlas.x == OBJECTS.LEVER_YELLOW_RIGHT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 	elif object == OBJECTS.LEVER_AQUA_LEFT || object == OBJECTS.LEVER_AQUA_RIGHT:
 		for y in range(SEARCH_SIZE.y):
 			for x in range(SEARCH_SIZE.x):
 				var pos := Vector2i(x, y)
 				var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-				var rot = $Objects.get_cell_alternative_tile(pos)
 				if atlas.x == OBJECTS.GATE_AQUA_CLOSED || atlas.x == OBJECTS.LEVER_AQUA_LEFT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
 				elif atlas.x == OBJECTS.GATE_AQUA_OPEN || atlas.x == OBJECTS.LEVER_AQUA_RIGHT:
-					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
+					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 
 func teleport(obj, object : OBJECTS) -> void:
 	if check_object(obj.pos, obj.color) == OBJECTS.TELEPORTER:
@@ -586,7 +580,8 @@ func teleport(obj, object : OBJECTS) -> void:
 				t = 0
 				obj.pos = currTele.pos # now update the node position
 				returnPos()
-				break
+				return;
+	return
 
 func win_show() -> void:
 	win = true
