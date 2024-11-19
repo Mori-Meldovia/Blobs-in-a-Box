@@ -76,7 +76,7 @@ func _ready() -> void:
 	
 	# Fetch and load nodes automatically
 	for child in get_children():
-		if child is not AnimatedSprite2D:
+		if !(child is AnimatedSprite2D || child is Sprite2D):
 			continue
 		
 		var child_name := child.get_name()
