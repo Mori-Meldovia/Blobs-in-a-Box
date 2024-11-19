@@ -519,7 +519,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAQAAgAAwAAAAMAAAA=")
+tile_map_data = PackedByteArray("AAAQAAgAAwAAAAMAAAACAAYAAwAWAAEAAAAPAAYAAwAWAAEAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="CrateRed" type="Sprite2D" parent="."]
@@ -543,7 +543,7 @@ texture = ExtResource("7_qx54a")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-position = Vector2(163, 159)
+position = Vector2(219, 160)
 scale = Vector2(2.54688, 2.7518)
 sprite_frames = SubResource("SpriteFrames_dwpjk")
 script = ExtResource("13_j5n5p")
@@ -551,7 +551,7 @@ script = ExtResource("13_j5n5p")
 [node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_q5xht")
-position = Vector2(224, 162)
+position = Vector2(160, 161)
 scale = Vector2(2.40313, 2.80365)
 sprite_frames = SubResource("SpriteFrames_mfjm3")
 script = ExtResource("13_j5n5p")

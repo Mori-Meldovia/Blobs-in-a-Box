@@ -62,6 +62,7 @@ var aqua_buttons := []
 var green_on := false
 var yellow_on := false
 var aqua_on := false
+var teleporters : Array[Dictionary] = []
 var no_of_stars := 0
 var win := false
 var defeat := false
@@ -153,18 +154,18 @@ func _ready() -> void:
 						"pos": pos,
 						"color": COLOR.BLUE,
 						"active": false
-					});
+					})
 					green_buttons.append({
 						"pos": pos,
 						"color": COLOR.RED,
 						"active": false
-					});
+					})
 				else:
 					green_buttons.append({
 						"pos": pos,
 						"color": atlas.y,
 						"active": false
-					});
+					})
 			elif atlas.x == OBJECTS.BUTTON_YELLOW:
 				if atlas.y == 0:
 					# purple button
@@ -172,18 +173,18 @@ func _ready() -> void:
 						"pos": pos,
 						"color": COLOR.BLUE,
 						"active": false
-					});
+					})
 					yellow_buttons.append({
 						"pos": pos,
 						"color": COLOR.RED,
 						"active": false
-					});
+					})
 				else:
 					yellow_buttons.append({
 						"pos": pos,
 						"color": atlas.y,
 						"active": false
-					});
+					})
 			elif atlas.x == OBJECTS.BUTTON_AQUA:
 				if atlas.y == 0:
 					# purple button
@@ -191,18 +192,24 @@ func _ready() -> void:
 						"pos": pos,
 						"color": COLOR.BLUE,
 						"active": false
-					});
+					})
 					aqua_buttons.append({
 						"pos": pos,
 						"color": COLOR.RED,
 						"active": false
-					});
+					})
 				else:
 					aqua_buttons.append({
 						"pos": pos,
 						"color": atlas.y,
 						"active": false
-					});
+					})
+			
+			if atlas.x == OBJECTS.TELEPORTER:
+				teleporters.append({
+					"pos": pos,
+					"color": atlas.y
+				})
 			
 	
 
@@ -556,33 +563,20 @@ func checkLevers(object : OBJECTS) -> void:
 					$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
 
 func teleport(obj, object : OBJECTS) -> void:
-	var teleporers : Array[Vector2i]
-	for y in range(SEARCH_SIZE.y):
-		for x in range(SEARCH_SIZE.x):
-			var pos := Vector2i(x, y)
-			var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
-			if atlas.x == OBJECTS.TELEPORTER:
-				teleporers.append(pos)
-	
-	#print(teleporers)
-	var in_teleporter = false
-	for currTele in teleporers:
-		if obj.pos == currTele:
-			in_teleporter = true
-	
-	if in_teleporter:
-		for currTele in teleporers:
-			if obj.pos != currTele:
-				obj.pos.x = currTele.x
-				obj.pos.y = currTele.y
-				
+	if check_object(obj.pos, obj.color) == OBJECTS.TELEPORTER:
+		for currTele in teleporters:
+			if obj.pos != currTele.pos:
 				# moved
-				t = 0
 				for objs in movables:
-					if (obj == objs):
+					if (objs == obj):
 						objs.moves.pop_back();
-						objs.moves.append(obj.pos)
+						objs.moves.append(currTele.pos) # update the actual position first
+						
+				await get_tree().create_timer(0.1).timeout
+				t = 0
+				obj.pos = currTele.pos # now update the node position
 				returnPos()
+				return;
 	return
 
 func win_show() -> void:
