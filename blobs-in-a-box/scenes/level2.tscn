@@ -508,12 +508,14 @@ tile_map_data = PackedByteArray("AAAPAAcAAwAAAAEAAAAPAAIAAwAAAAIAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 position = Vector2(166, 486)
 scale = Vector2(2.54688, 2.7518)
 sprite_frames = SubResource("SpriteFrames_r8aof")
 script = ExtResource("9_dveum")
 
 [node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 position = Vector2(157, 169)
 scale = Vector2(2.40313, 2.80365)
 sprite_frames = SubResource("SpriteFrames_72gjf")

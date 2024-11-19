@@ -15,6 +15,10 @@ run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assests/sprite/icon.svg"
 
+[audio]
+
+buses/default_bus_layout=""
+
 [autoload]
 
 GameHolder="*res://scripts/game_holder.gd"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://b2g7dwaem7t6x"]
+[gd_scene load_steps=32 format=4 uid="uid://b2g7dwaem7t6x"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_tykvs"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_yaypt"]
@@ -9,11 +9,13 @@
 [ext_resource type="Texture2D" uid="uid://bbomb60sl2cx6" path="res://assets/sprite/red-sprite/red-left.png" id="7_wyv68"]
 [ext_resource type="Texture2D" uid="uid://cfbrr3spjelw6" path="res://assets/sprite/red-sprite/red-right.png" id="8_u0wvr"]
 [ext_resource type="Texture2D" uid="uid://cr8dpelcffj86" path="res://assets/sprite/red-sprite/red-up.png" id="9_v1ffi"]
+[ext_resource type="Shader" path="res://purple.gdshader" id="10_18dnm"]
 [ext_resource type="Texture2D" uid="uid://cqlkyvic0xoh8" path="res://assets/sprite/blue-sprite/blue-idle.png" id="10_apyi1"]
 [ext_resource type="Texture2D" uid="uid://bo67s72c1vsow" path="res://assets/sprite/blue-sprite/blue-down.png" id="11_obe3j"]
 [ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="12_7te5j"]
 [ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="13_2fhn7"]
 [ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="14_qqrnw"]
+[ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="16_jjgt0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_yaypt")
@@ -424,6 +426,10 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c8lip"]
+shader = ExtResource("10_18dnm")
+shader_parameter/offset = null
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_n0vnq"]
 atlas = ExtResource("10_apyi1")
 region = Rect2(0, 0, 32, 32)
@@ -508,6 +514,7 @@ tile_map_data = PackedByteArray("AAAPAAIAAwAAAAEAAAAOAAcAAwAAAAIAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 position = Vector2(165, 482)
 scale = Vector2(2.54688, 2.7518)
 sprite_frames = SubResource("SpriteFrames_km5l8")
@@ -516,6 +523,8 @@ frame_progress = 0.99856
 script = ExtResource("5_jbgyk")
 
 [node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_c8lip")
 position = Vector2(155, 163)
 scale = Vector2(2.625, 3.0625)
 sprite_frames = SubResource("SpriteFrames_dvc74")
@@ -542,3 +551,9 @@ text = "Defeat
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_jjgt0")
+volume_db = -6.0
+autoplay = true
+parameters/looping = true

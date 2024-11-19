@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://gwyv43wea7u0"]
+[gd_scene load_steps=10 format=3 uid="uid://gwyv43wea7u0"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_8567d"]
 [ext_resource type="Texture2D" uid="uid://b7xc3388w1hcj" path="res://ui/title-background.png" id="1_v085t"]
 [ext_resource type="FontFile" uid="uid://4ssqp6wjn67q" path="res://ui/Halo Dek.ttf" id="2_rvih5"]
+[ext_resource type="AudioStream" uid="uid://calddtfsrfuil" path="res://assets/soundtrack/Blobs on Title.mp3" id="4_2nki0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fvxrh"]
 texture = ExtResource("1_v085t")
@@ -121,6 +122,12 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fxpgk")
 theme_override_styles/normal = SubResource("StyleBoxFlat_em7o0")
 text = "Exit
 "
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_2nki0")
+volume_db = -6.0
+autoplay = true
+parameters/looping = true
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_quit_pressed"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b5w14kqfryjks"
+path="res://.godot/imported/Blobs in a Box.mp3-fa6b6c2c9bcc2a829ecb3cbe8b117e53.mp3str"
+
+[deps]
+
+source_file="res://assets/soundtrack/Blobs in a Box.mp3"
+dest_files=["res://.godot/imported/Blobs in a Box.mp3-fa6b6c2c9bcc2a829ecb3cbe8b117e53.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=5.6
+bpm=300.0
+beat_count=332
+bar_beats=2

@@ -518,6 +518,7 @@ position = Vector2(168, 487)
 scale = Vector2(2.40313, 2.80365)
 sprite_frames = SubResource("SpriteFrames_6ftna")
 animation = &"up"
+frame_progress = 0.0705662
 script = ExtResource("9_r71rg")
 
 [node name="Win" type="Label" parent="."]
