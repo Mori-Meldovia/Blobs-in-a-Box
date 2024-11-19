@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8jtrxqmmm7vt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qyt1x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcwst"]
+bg_color = Color(0.763812, 0.763807, 0.763808, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fn8jc"]
+bg_color = Color(0.991164, 0.991164, 0.991164, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_antfn"]
+bg_color = Color(0.991164, 0.991164, 0.991164, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_offset = Vector2(0, 3.41)
+
+[node name="Restart" type="Button"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -59.0
+offset_right = 67.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 0
+theme_override_constants/h_separation = 0
+theme_override_constants/icon_max_width = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qyt1x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bcwst")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fn8jc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_antfn")
+text = "Restart
+"

@@ -21,6 +21,7 @@ buses/default_bus_layout=""
 [autoload]
 
 GameHolder="*res://scripts/game_holder.gd"
+MainAudio="*res://scenes/main_audio.tscn"
 
 [input]
 

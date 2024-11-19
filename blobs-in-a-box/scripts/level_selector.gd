@@ -6,6 +6,7 @@ var num = 1
 @onready var gridbox = $MarginContainer/VBoxContainer/GridContainer
 
 func _ready():
+	MainAudio.play_music_level()
 	# Number all the level boxes and unlock them
 	# Replace with your game's level/unlocks/etc.
 	# You can also connect the "level_selected" signals here

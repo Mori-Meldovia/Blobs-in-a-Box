@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://5cj8wv2jgnxh"]
+[gd_scene load_steps=38 format=4 uid="uid://5cj8wv2jgnxh"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_vn5sc"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_fmjcu"]
@@ -19,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="16_q58h7"]
 [ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="17_58dx7"]
 [ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="18_joewb"]
+[ext_resource type="PackedScene" uid="uid://dqw68toab6xl7" path="res://scenes/win_button.tscn" id="19_xfktg"]
+[ext_resource type="PackedScene" uid="uid://b8jtrxqmmm7vt" path="res://scenes/restart_btn.tscn" id="20_fcjys"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_fmjcu")
@@ -555,29 +557,15 @@ scale = Vector2(2.40313, 2.80365)
 sprite_frames = SubResource("SpriteFrames_mfjm3")
 script = ExtResource("13_j5n5p")
 
-[node name="Win" type="Label" parent="."]
-offset_left = 460.0
-offset_top = 15.0
-offset_right = 643.0
-offset_bottom = 132.0
-text = "Win
-"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Win" parent="." instance=ExtResource("19_xfktg")]
 
-[node name="Defeat" type="Label" parent="."]
-offset_left = 460.0
-offset_top = 14.0
-offset_right = 643.0
-offset_bottom = 131.0
-text = "Defeat
-
-"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Restart" parent="." instance=ExtResource("20_fcjys")]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_iw0p8")
 volume_db = -6.0
 autoplay = true
 parameters/looping = true
+
+[connection signal="pressed" from="Win" to="." method="_on_win_pressed"]
+[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]

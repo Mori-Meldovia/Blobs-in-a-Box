@@ -66,12 +66,13 @@ var teleporters : Array[Dictionary] = []
 var no_of_stars := 0
 var win := false
 var defeat := false
-@onready var win_label : Label = $Win
-@onready var defeat_label : Label = $Defeat
+@onready var win_label : Button = $Win
+@onready var defeat_label : Button = $Restart
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	MainAudio.stop_main_music()
 	win_label.hide()
 	defeat_label.hide()
 	
@@ -619,3 +620,11 @@ func returnPos() -> void:
 		
 		print(type + " " + color + " | " + str(obj.moves))
 	print()
+
+
+func _on_win_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/level_screen.tscn")
+
+
+func _on_restart_pressed() -> void:
+	get_tree().change_scene_to_file(get_tree().current_scene.file_)
