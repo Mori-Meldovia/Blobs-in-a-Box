@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://c6c6u1jgc3atu"]
+[gd_scene load_steps=35 format=4 uid="uid://c6c6u1jgc3atu"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_vmyy4"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_y1e24"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="14_17fhm"]
 [ext_resource type="PackedScene" uid="uid://dqw68toab6xl7" path="res://scenes/win_button.tscn" id="16_ufri6"]
 [ext_resource type="PackedScene" uid="uid://b8jtrxqmmm7vt" path="res://scenes/restart_btn.tscn" id="17_jekh4"]
+[ext_resource type="FontFile" uid="uid://4ssqp6wjn67q" path="res://ui/Halo Dek.ttf" id="19_gukx8"]
 [ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="19_v1ky8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
@@ -540,6 +541,42 @@ stream = ExtResource("19_v1ky8")
 volume_db = -6.0
 autoplay = true
 parameters/looping = true
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -501.0
+offset_top = -89.0
+offset_right = -117.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_gukx8")
+theme_override_font_sizes/font_size = 30
+text = "Blue interacts with blue!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -501.0
+offset_top = -24.0
+offset_right = -117.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_gukx8")
+theme_override_font_sizes/font_size = 30
+text = "Red interacts with Red!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Win" to="." method="_on_win_pressed"]
 [connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]

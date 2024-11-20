@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://b2g7dwaem7t6x"]
+[gd_scene load_steps=35 format=4 uid="uid://b2g7dwaem7t6x"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_tykvs"]
 [ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_yaypt"]
@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="16_jjgt0"]
 [ext_resource type="PackedScene" uid="uid://dqw68toab6xl7" path="res://scenes/win_button.tscn" id="16_q60xw"]
 [ext_resource type="PackedScene" uid="uid://b8jtrxqmmm7vt" path="res://scenes/restart_btn.tscn" id="17_5nynu"]
+[ext_resource type="FontFile" uid="uid://4ssqp6wjn67q" path="res://ui/Halo Dek.ttf" id="19_nag7h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
 texture = ExtResource("2_yaypt")
@@ -540,6 +541,60 @@ stream = ExtResource("16_jjgt0")
 volume_db = -6.0
 autoplay = true
 parameters/looping = true
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -612.0
+offset_top = 237.0
+offset_right = -228.0
+offset_bottom = 333.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_nag7h")
+theme_override_font_sizes/font_size = 30
+text = "WASd to move"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 266.0
+offset_top = 238.0
+offset_right = 650.0
+offset_bottom = 334.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_nag7h")
+theme_override_font_sizes/font_size = 30
+text = "z to undo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -635.0
+offset_top = -334.0
+offset_right = -251.0
+offset_bottom = -238.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_nag7h")
+theme_override_font_sizes/font_size = 30
+text = "ESC to Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Win" to="." method="_on_win_pressed"]
 [connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
