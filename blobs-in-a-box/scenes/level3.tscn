@@ -15,8 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="12_2p6sy"]
 [ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="13_tpvcn"]
 [ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="14_pfi07"]
-[ext_resource type="PackedScene" uid="uid://dqw68toab6xl7" path="res://scenes/win_button.tscn" id="16_28uv3"]
-[ext_resource type="PackedScene" uid="uid://b8jtrxqmmm7vt" path="res://scenes/restart_btn.tscn" id="17_mk0sk"]
+[ext_resource type="PackedScene" path="res://scenes/win_button.tscn" id="16_28uv3"]
+[ext_resource type="PackedScene" path="res://scenes/restart_btn.tscn" id="17_mk0sk"]
 [ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="19_hsusk"]
 [ext_resource type="FontFile" uid="uid://4ssqp6wjn67q" path="res://ui/Halo Dek.ttf" id="19_n6ac5"]
 
@@ -502,7 +502,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Game" type="Node"]
+[node name="Game2" type="Node"]
 script = ExtResource("1_meye8")
 
 [node name="Walls" type="TileMapLayer" parent="."]
@@ -514,7 +514,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAACAAcAAwAAAAAAAAAEAAcAAwAMAAEAAGACAAIAAwAGAAMAAAAEAAIAAwANAAIAAGAHAAUAAwAMAAIAAAAJAAUAAwANAAEAAAA=")
+tile_map_data = PackedByteArray("AAACAAcAAwAAAAAAAAAEAAcAAwAMAAMAAGACAAIAAwAGAAMAAAAEAAIAAwANAAIAAGAHAAUAAwAMAAIAAAAJAAUAAwANAAEAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]

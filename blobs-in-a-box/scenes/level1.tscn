@@ -16,8 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="13_2fhn7"]
 [ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="14_qqrnw"]
 [ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="16_jjgt0"]
-[ext_resource type="PackedScene" uid="uid://dqw68toab6xl7" path="res://scenes/win_button.tscn" id="16_q60xw"]
-[ext_resource type="PackedScene" uid="uid://b8jtrxqmmm7vt" path="res://scenes/restart_btn.tscn" id="17_5nynu"]
+[ext_resource type="PackedScene" path="res://scenes/win_button.tscn" id="16_q60xw"]
+[ext_resource type="PackedScene" path="res://scenes/restart_btn.tscn" id="17_5nynu"]
 [ext_resource type="FontFile" uid="uid://4ssqp6wjn67q" path="res://ui/Halo Dek.ttf" id="19_nag7h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
@@ -502,7 +502,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Game" type="Node"]
+[node name="Game3" type="Node"]
 script = ExtResource("1_tykvs")
 
 [node name="Walls" type="TileMapLayer" parent="."]
