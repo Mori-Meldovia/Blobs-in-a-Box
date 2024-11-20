@@ -514,7 +514,7 @@ tile_set = SubResource("TileSet_3pr21")
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAACAAcAAwAAAAAAAAAEAAcAAwAMAAMAAGACAAIAAwAGAAMAAAAEAAIAAwANAAIAAGAHAAUAAwAMAAIAAAAJAAUAAwANAAEAAAA=")
+tile_map_data = PackedByteArray("AAACAAcAAwAAAAAAAAAEAAcAAwAMAAMAAGACAAIAAwAGAAMAAAAEAAIAAwANAAIAAGA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]

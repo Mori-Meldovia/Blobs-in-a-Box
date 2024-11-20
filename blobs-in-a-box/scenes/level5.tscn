@@ -1,29 +1,29 @@
-[gd_scene load_steps=37 format=4 uid="uid://ddyiy4rf0s4wu"]
+[gd_scene load_steps=38 format=4 uid="uid://5cj8wv2jgnxh"]
 
-[ext_resource type="Script" path="res://scripts/game.gd" id="1_2pmke"]
-[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_ivc36"]
-[ext_resource type="Texture2D" uid="uid://bvuia3sthaw0" path="res://assets/tilemap/Objects.png" id="3_lvsle"]
-[ext_resource type="Texture2D" uid="uid://cualy1lsbgb3g" path="res://assets/sprite/red_crate.png" id="4_1cfdh"]
-[ext_resource type="Shader" path="res://purple.gdshader" id="5_40hj7"]
-[ext_resource type="Texture2D" uid="uid://de45a876d6ahj" path="res://assets/sprite/blue_crate.png" id="6_0efxo"]
-[ext_resource type="Texture2D" uid="uid://b7yc3hcpvdfnn" path="res://assets/sprite/gray_crate.png" id="7_6etbd"]
-[ext_resource type="Texture2D" uid="uid://b1h8qfqsvgjjf" path="res://assets/sprite/red-sprite/red-idle.png" id="8_n7l1l"]
-[ext_resource type="Texture2D" uid="uid://k5hqcy2mt7tg" path="res://assets/sprite/red-sprite/red-down.png" id="9_dqgkm"]
-[ext_resource type="Texture2D" uid="uid://bbomb60sl2cx6" path="res://assets/sprite/red-sprite/red-left.png" id="10_0i2ak"]
-[ext_resource type="Texture2D" uid="uid://cfbrr3spjelw6" path="res://assets/sprite/red-sprite/red-right.png" id="11_va6b5"]
-[ext_resource type="Texture2D" uid="uid://cr8dpelcffj86" path="res://assets/sprite/red-sprite/red-up.png" id="12_rw8hn"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="13_3na2q"]
-[ext_resource type="Texture2D" uid="uid://cqlkyvic0xoh8" path="res://assets/sprite/blue-sprite/blue-idle.png" id="14_xh2t0"]
-[ext_resource type="Texture2D" uid="uid://bo67s72c1vsow" path="res://assets/sprite/blue-sprite/blue-down.png" id="15_wolp3"]
-[ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="16_e5onq"]
-[ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="17_dihe2"]
-[ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="18_ia6qp"]
-[ext_resource type="PackedScene" path="res://scenes/win_button.tscn" id="19_xe8vt"]
-[ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="19_yx5lq"]
-[ext_resource type="PackedScene" path="res://scenes/restart_btn.tscn" id="20_g3wg0"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_d3ndp"]
+[ext_resource type="Texture2D" uid="uid://b5hg6xppil3xm" path="res://assets/tilemap/walls.png" id="2_i3vuq"]
+[ext_resource type="Texture2D" uid="uid://bvuia3sthaw0" path="res://assets/tilemap/Objects.png" id="3_ofbf5"]
+[ext_resource type="Texture2D" uid="uid://cualy1lsbgb3g" path="res://assets/sprite/red_crate.png" id="4_pkxyq"]
+[ext_resource type="Shader" path="res://purple.gdshader" id="5_chluj"]
+[ext_resource type="Texture2D" uid="uid://de45a876d6ahj" path="res://assets/sprite/blue_crate.png" id="6_wbsee"]
+[ext_resource type="Texture2D" uid="uid://b7yc3hcpvdfnn" path="res://assets/sprite/gray_crate.png" id="7_paxd8"]
+[ext_resource type="Texture2D" uid="uid://b1h8qfqsvgjjf" path="res://assets/sprite/red-sprite/red-idle.png" id="8_76pr2"]
+[ext_resource type="Texture2D" uid="uid://k5hqcy2mt7tg" path="res://assets/sprite/red-sprite/red-down.png" id="9_y5d7p"]
+[ext_resource type="Texture2D" uid="uid://bbomb60sl2cx6" path="res://assets/sprite/red-sprite/red-left.png" id="10_33sxn"]
+[ext_resource type="Texture2D" uid="uid://cfbrr3spjelw6" path="res://assets/sprite/red-sprite/red-right.png" id="11_mcpye"]
+[ext_resource type="Texture2D" uid="uid://cr8dpelcffj86" path="res://assets/sprite/red-sprite/red-up.png" id="12_tljvk"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="13_ddnie"]
+[ext_resource type="Texture2D" uid="uid://cqlkyvic0xoh8" path="res://assets/sprite/blue-sprite/blue-idle.png" id="14_uxi30"]
+[ext_resource type="Texture2D" uid="uid://bo67s72c1vsow" path="res://assets/sprite/blue-sprite/blue-down.png" id="15_fqmqd"]
+[ext_resource type="Texture2D" uid="uid://3rn6usdls8by" path="res://assets/sprite/blue-sprite/blue-left.png" id="16_t06m0"]
+[ext_resource type="Texture2D" uid="uid://bhrctgcicye7j" path="res://assets/sprite/blue-sprite/blue-right.png" id="17_tunxg"]
+[ext_resource type="Texture2D" uid="uid://ctrdpp1pms0b0" path="res://assets/sprite/blue-sprite/blue-up.png" id="18_aq4hs"]
+[ext_resource type="PackedScene" path="res://scenes/win_button.tscn" id="19_m3j70"]
+[ext_resource type="PackedScene" path="res://scenes/restart_btn.tscn" id="20_0iy2c"]
+[ext_resource type="AudioStream" uid="uid://b5w14kqfryjks" path="res://assets/soundtrack/Blobs in a Box.mp3" id="21_ehs0s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kmss"]
-texture = ExtResource("2_ivc36")
+texture = ExtResource("2_i3vuq")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -279,7 +279,7 @@ terrain_set_0/terrain_2/color = Color(0.578879, 0.460658, 0, 1)
 sources/2 = SubResource("TileSetAtlasSource_2kmss")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bgidb"]
-texture = ExtResource("3_lvsle")
+texture = ExtResource("3_ofbf5")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -364,27 +364,27 @@ tile_size = Vector2i(32, 32)
 sources/3 = SubResource("TileSetAtlasSource_bgidb")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gdnr8"]
-shader = ExtResource("5_40hj7")
+shader = ExtResource("5_chluj")
 shader_parameter/offset = Vector2(0, -100)
-shader_parameter/texture2 = ExtResource("4_1cfdh")
+shader_parameter/texture2 = ExtResource("4_pkxyq")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37dhj"]
-atlas = ExtResource("8_n7l1l")
+atlas = ExtResource("8_76pr2")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t4yf7"]
-atlas = ExtResource("8_n7l1l")
+atlas = ExtResource("8_76pr2")
 region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b14v4"]
-atlas = ExtResource("8_n7l1l")
+atlas = ExtResource("8_76pr2")
 region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rwtow"]
-atlas = ExtResource("8_n7l1l")
+atlas = ExtResource("8_76pr2")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_wodde"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_dwpjk"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -405,7 +405,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_dqgkm")
+"texture": ExtResource("9_y5d7p")
 }],
 "loop": true,
 "name": &"down",
@@ -413,7 +413,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("10_0i2ak")
+"texture": ExtResource("10_33sxn")
 }],
 "loop": true,
 "name": &"left",
@@ -421,7 +421,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_va6b5")
+"texture": ExtResource("11_mcpye")
 }],
 "loop": true,
 "name": &"right",
@@ -429,30 +429,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("12_rw8hn")
+"texture": ExtResource("12_tljvk")
 }],
 "loop": true,
 "name": &"up",
 "speed": 5.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q5xht"]
+shader = ExtResource("5_chluj")
+shader_parameter/offset = Vector2(-1000, 0)
+shader_parameter/texture2 = ExtResource("8_76pr2")
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_n0vnq"]
-atlas = ExtResource("14_xh2t0")
+atlas = ExtResource("14_uxi30")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m73nx"]
-atlas = ExtResource("14_xh2t0")
+atlas = ExtResource("14_uxi30")
 region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8l4df"]
-atlas = ExtResource("14_xh2t0")
+atlas = ExtResource("14_uxi30")
 region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uxf5t"]
-atlas = ExtResource("14_xh2t0")
+atlas = ExtResource("14_uxi30")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ohiyg"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_mfjm3"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -473,7 +478,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("15_wolp3")
+"texture": ExtResource("15_fqmqd")
 }],
 "loop": true,
 "name": &"down",
@@ -481,7 +486,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("16_e5onq")
+"texture": ExtResource("16_t06m0")
 }],
 "loop": true,
 "name": &"left",
@@ -489,7 +494,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("17_dihe2")
+"texture": ExtResource("17_tunxg")
 }],
 "loop": true,
 "name": &"right",
@@ -497,66 +502,68 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("18_ia6qp")
+"texture": ExtResource("18_aq4hs")
 }],
 "loop": true,
 "name": &"up",
 "speed": 5.0
 }]
 
-[node name="Game2" type="Node"]
-script = ExtResource("1_2pmke")
+[node name="Game3" type="Node"]
+script = ExtResource("1_d3ndp")
 
 [node name="Walls" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(4, 4)
-tile_map_data = PackedByteArray("AAAAAAEAAgAAAAEAAAAAAAIAAgAAAAEAAAAAAAMAAgAAAAEAAAAAAAQAAgAAAAEAAAAAAAUAAgAAAAEAAAAAAAYAAgAAAAEAAAAAAAcAAgAAAAEAAAAAAAgAAgAAAAEAAAAAAAkAAgAAAAIAAAABAAkAAgABAAIAAAACAAkAAgABAAIAAAADAAkAAgABAAIAAAAEAAkAAgABAAIAAAAFAAkAAgABAAIAAAAGAAkAAgABAAIAAAAHAAkAAgABAAIAAAAIAAkAAgABAAIAAAAJAAkAAgABAAIAAAAKAAkAAgABAAIAAAALAAkAAgABAAIAAAAMAAkAAgABAAIAAAANAAkAAgABAAIAAAAOAAkAAgABAAIAAAAPAAkAAgABAAIAAAAQAAkAAgABAAIAAAARAAkAAgACAAIAAAARAAgAAgACAAEAAAARAAcAAgACAAEAAAARAAYAAgACAAEAAAARAAUAAgACAAEAAAARAAQAAgACAAEAAAARAAMAAgACAAEAAAARAAIAAgACAAEAAAARAAEAAgACAAEAAAARAAAAAgACAAEAAAAQAAAAAgABAAAAAAAPAAAAAgABAAAAAAAOAAAAAgABAAAAAAANAAAAAgABAAAAAAAMAAAAAgABAAAAAAALAAAAAgABAAAAAAAKAAAAAgABAAAAAAAJAAAAAgABAAAAAAAIAAAAAgABAAAAAAAHAAAAAgABAAAAAAAGAAAAAgABAAAAAAAFAAAAAgABAAAAAAAEAAAAAgABAAAAAAADAAAAAgABAAAAAAACAAAAAgABAAAAAAAFAAIAAgAAAAwAAAAJAAIAAgAAAAwAAAAKAAIAAgAAAAwAAAAMAAIAAgAAAAwAAAANAAIAAgAAAAwAAAAOAAIAAgAAAAwAAAAPAAIAAgAAAAwAAAAPAAMAAgAAAAwAAAAPAAQAAgAAAAwAAAAPAAUAAgAAAAwAAAAPAAYAAgAAAAwAAAAPAAcAAgAAAAwAAAAOAAcAAgAAAAwAAAANAAcAAgAAAAwAAAALAAQAAgAAAAwAAAAMAAQAAgAAAAwAAAANAAQAAgAAAAwAAAANAAYAAgAAAAwAAAAKAAQAAgAAAAwAAAAJAAQAAgAAAAwAAAAJAAUAAgAAAAwAAAAJAAYAAgAAAAwAAAAJAAcAAgAAAAwAAAALAAYAAgAAAAwAAAALAAcAAgAAAAwAAAALAAgAAgAAAAwAAAAGAAQAAgAAAAwAAAACAAQAAgAAAAwAAAADAAcAAgAAAAwAAAAEAAcAAgAAAAwAAAAFAAcAAgAAAAwAAAAGAAcAAgAAAAwAAAAGAAUAAgAAAAwAAAAGAAYAAgAAAAwAAAAKAAcAAgAAAAwAAAAMAAcAAgAAAAwAAAABAAgAAgAAAAwAAAABAAcAAgAAAAwAAAABAAYAAgAAAAwAAAABAAUAAgAAAAwAAAAFAAMAAgAAAAwAAAAHAAMAAgAAAAwAAAAIAAMAAgAAAAwAAAAJAAMAAgAAAAwAAAAKAAMAAgAAAAwAAAALAAMAAgAAAAwAAAAMAAMAAgAAAAwAAAANAAMAAgAAAAwAAAAOAAMAAgAAAAwAAAAOAAQAAgAAAAwAAAAOAAUAAgAAAAwAAAAOAAYAAgAAAAwAAAANAAUAAgAAAAwAAAAMAAUAAgAAAAwAAAAMAAYAAgAAAAwAAAALAAUAAgAAAAwAAAAKAAUAAgAAAAwAAAAKAAYAAgAAAAwAAAAJAAgAAgAAAAwAAAAIAAgAAgAAAAwAAAAHAAgAAgAAAAwAAAAGAAgAAgAAAAwAAAAFAAgAAgAAAAwAAAAEAAgAAgAAAAwAAAADAAgAAgAAAAwAAAACAAgAAgAAAAwAAAAKAAgAAgAAAAwAAAAIAAcAAgAAAAwAAAAIAAYAAgAAAAwAAAAIAAUAAgAAAAwAAAAIAAQAAgAAAAwAAAAHAAUAAgAAAAwAAAAHAAYAAgAAAAwAAAAHAAcAAgAAAAwAAAAFAAUAAgAAAAwAAAAFAAYAAgAAAAwAAAAMAAgAAgAAAAwAAAANAAgAAgAAAAwAAAAOAAgAAgAAAAwAAAAPAAgAAgAAAAwAAAAQAAgAAgAAAAwAAAAQAAcAAgAAAAwAAAAQAAYAAgAAAAwAAAAQAAUAAgAAAAwAAAAQAAQAAgAAAAwAAAAQAAMAAgAAAAwAAAAQAAIAAgAAAAwAAAAQAAEAAgAAAAwAAAAPAAEAAgAAAAwAAAAOAAEAAgAAAAwAAAANAAEAAgAAAAwAAAAMAAEAAgAAAAwAAAALAAEAAgAAAAwAAAAKAAEAAgAAAAwAAAAJAAEAAgAAAAwAAAAIAAEAAgAAAAwAAAAHAAEAAgAAAAwAAAACAAcAAgAAAAwAAAACAAYAAgAAAAwAAAACAAUAAgAAAAwAAAAEAAIAAgAAAAwAAAADAAIAAgAAAAwAAAACAAIAAgAAAAwAAAALAAIAAgAAAAwAAAAHAAQAAgAAAAwAAAAGAAIAAgAAAAwAAAAEAAMAAgAAAAwAAAAEAAUAAgAAAAwAAAAEAAYAAgAAAAwAAAADAAYAAgAAAAwAAAAIAAIAAgAAAAwAAAAHAAIAAgAAAAwAAAAGAAMAAgAAAAwAAAAFAAQAAgAAAAwAAAAEAAQAAgAAAAwAAAADAAUAAgAAAAwAAAADAAQAAgAAAAwAAAAAAAAAAgAAAAAAAAABAAAAAgABAAAAAAABAAQAAgAAAAwAAAABAAMAAgAAAAwAAAABAAIAAgAAAAwAAAABAAEAAgAAAAwAAAACAAEAAgAAAAwAAAADAAEAAgAAAAwAAAAEAAEAAgAAAAwAAAAFAAEAAgAAAAwAAAAGAAEAAgAAAAwAAAACAAMAAgAAAAwAAAADAAMAAgAAAAwAAAA=")
+tile_map_data = PackedByteArray("AAAAAAEAAgADAAEAAAAAAAIAAgAAAAEAAAAAAAMAAgADAAEAAAAAAAQAAgADAAEAAAAAAAUAAgADAAEAAAAAAAYAAgADAAEAAAAAAAcAAgADAAEAAAAAAAgAAgADAAEAAAAAAAkAAgAAAAIAAAABAAkAAgABAAMAAAACAAkAAgABAAMAAAADAAkAAgABAAMAAAAEAAkAAgABAAMAAAAFAAkAAgABAAMAAAAGAAkAAgABAAMAAAAHAAkAAgABAAMAAAAIAAkAAgABAAMAAAAJAAkAAgABAAMAAAAKAAkAAgABAAMAAAALAAkAAgABAAMAAAAMAAkAAgABAAMAAAANAAkAAgABAAMAAAAOAAkAAgABAAMAAAAPAAkAAgABAAMAAAAQAAkAAgABAAMAAAARAAkAAgACAAIAAAARAAgAAgADAAEAAAARAAcAAgACAAEAAAARAAYAAgADAAEAAAARAAUAAgADAAEAAAARAAQAAgADAAEAAAARAAMAAgADAAEAAAARAAIAAgADAAEAAAARAAEAAgADAAEAAAARAAAAAgACAAAAAAAQAAAAAgABAAMAAAAPAAAAAgABAAMAAAAOAAAAAgABAAMAAAANAAAAAgABAAMAAAAMAAAAAgABAAMAAAALAAAAAgABAAMAAAAKAAAAAgABAAMAAAAJAAAAAgABAAMAAAAIAAAAAgABAAMAAAAHAAAAAgABAAMAAAAGAAAAAgABAAMAAAAFAAAAAgABAAMAAAAEAAAAAgABAAMAAAADAAAAAgABAAMAAAACAAAAAgABAAMAAAAFAAIAAgAAAAwAAAAJAAIAAgABAAMAAAAKAAIAAgABAAMAAAAMAAIAAgABAAMAAAANAAIAAgABAAMAAAAOAAIAAgABAAMAAAAPAAIAAgACAAMAAAAPAAMAAgAAAAwAAAAPAAQAAgAAAAwAAAAPAAUAAgAAAAwAAAAPAAYAAgAAAAwAAAAPAAcAAgABAAMAAAAOAAcAAgABAAMAAAANAAcAAgAAAAMAAAALAAQAAgAAAAwAAAAMAAQAAgAAAAwAAAANAAQAAgAAAAwAAAANAAYAAgAAAAwAAAAKAAQAAgAAAAwAAAAJAAQAAgAAAAwAAAAJAAUAAgAAAAwAAAAJAAYAAgAAAAwAAAAJAAcAAgABAAMAAAALAAYAAgAAAAwAAAALAAcAAgACAAMAAAALAAgAAgAAAAwAAAAGAAQAAgAAAAwAAAACAAQAAgAAAAwAAAADAAcAAgABAAMAAAAEAAcAAgABAAMAAAAFAAcAAgABAAMAAAAGAAcAAgABAAMAAAAGAAUAAgAAAAwAAAAGAAYAAgAAAAwAAAAKAAcAAgABAAMAAAAMAAcAAgAAAAwAAAABAAgAAgAAAAwAAAABAAcAAgAAAAwAAAABAAYAAgAAAAwAAAABAAUAAgAAAAwAAAAFAAMAAgAAAAwAAAAHAAMAAgAAAAwAAAAIAAMAAgAAAAwAAAAJAAMAAgAAAAwAAAAKAAMAAgAAAAwAAAALAAMAAgAAAAwAAAAMAAMAAgAAAAwAAAANAAMAAgAAAAwAAAAOAAMAAgAAAAwAAAAOAAQAAgAAAAwAAAAOAAUAAgAAAAwAAAAOAAYAAgAAAAwAAAANAAUAAgAAAAwAAAAMAAUAAgAAAAwAAAAMAAYAAgAAAAwAAAALAAUAAgAAAAwAAAAKAAUAAgAAAAwAAAAKAAYAAgAAAAwAAAAJAAgAAgAAAAwAAAAIAAgAAgAAAAwAAAAHAAgAAgAAAAwAAAAGAAgAAgAAAAwAAAAFAAgAAgAAAAwAAAAEAAgAAgAAAAwAAAADAAgAAgAAAAwAAAACAAgAAgAAAAwAAAAKAAgAAgAAAAwAAAAIAAcAAgABAAMAAAAIAAYAAgAAAAwAAAAIAAUAAgAAAAwAAAAIAAQAAgAAAAwAAAAHAAUAAgAAAAwAAAAHAAYAAgAAAAwAAAAHAAcAAgABAAMAAAAFAAUAAgAAAAwAAAAFAAYAAgAAAAwAAAAMAAgAAgAAAAwAAAANAAgAAgAAAAwAAAAOAAgAAgAAAAwAAAAPAAgAAgAAAAwAAAAQAAgAAgAAAAwAAAAQAAcAAgABAAMAAAAQAAYAAgAAAAwAAAAQAAUAAgAAAAwAAAAQAAQAAgAAAAwAAAAQAAMAAgAAAAwAAAAQAAIAAgAAAAwAAAAQAAEAAgAAAAwAAAAPAAEAAgAAAAwAAAAOAAEAAgAAAAwAAAANAAEAAgAAAAwAAAAMAAEAAgAAAAwAAAALAAEAAgAAAAwAAAAKAAEAAgAAAAwAAAAJAAEAAgAAAAwAAAAIAAEAAgAAAAwAAAAHAAEAAgAAAAwAAAACAAcAAgAAAAMAAAACAAYAAgAAAAwAAAACAAUAAgAAAAwAAAAEAAIAAgACAAMAAAADAAIAAgABAAMAAAACAAIAAgABAAMAAAALAAIAAgABAAMAAAAHAAQAAgAAAAwAAAAGAAIAAgAAAAMAAAAEAAMAAgAAAAwAAAAEAAUAAgAAAAwAAAAEAAYAAgAAAAwAAAADAAYAAgAAAAwAAAAIAAIAAgABAAMAAAAHAAIAAgABAAMAAAAGAAMAAgAAAAwAAAAFAAQAAgAAAAwAAAAEAAQAAgAAAAwAAAADAAUAAgAAAAwAAAADAAQAAgAAAAwAAAAAAAAAAgAAAAAAAAABAAAAAgABAAMAAAABAAQAAgAAAAwAAAABAAMAAgAAAAwAAAABAAIAAgABAAMAAAABAAEAAgAAAAwAAAACAAEAAgAAAAwAAAADAAEAAgAAAAwAAAAEAAEAAgAAAAwAAAAFAAEAAgAAAAwAAAAGAAEAAgAAAAwAAAACAAMAAgAAAAwAAAADAAMAAgAAAAwAAAA=")
 tile_set = SubResource("TileSet_3pr21")
 
 [node name="Objects" type="TileMapLayer" parent="."]
 texture_filter = 1
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAQAAgAAwAAAAMAAAA=")
+tile_map_data = PackedByteArray("AAAQAAgAAwAAAAMAAAANAAgAAwAMAAMAAGAPAAgAAwANAAMAAGABAAEAAwADAAMAAAACAAEAAwADAAMAAAADAAEAAwADAAMAAAAEAAEAAwADAAMAAAA=")
 tile_set = SubResource("TileSet_7wl2r")
 
 [node name="CrateRed" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(223, 221)
+position = Vector2(605, 347)
 scale = Vector2(2, 2)
-texture = ExtResource("4_1cfdh")
+texture = ExtResource("4_pkxyq")
 
 [node name="CrateBlue" type="Sprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_gdnr8")
-position = Vector2(159, 220)
+position = Vector2(541, 352)
 scale = Vector2(2, 2)
-texture = ExtResource("6_0efxo")
+texture = ExtResource("6_wbsee")
 
 [node name="CrateGray" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(287, 221)
+position = Vector2(356, 160)
 scale = Vector2(2, 2)
-texture = ExtResource("7_6etbd")
+texture = ExtResource("7_paxd8")
 
 [node name="PlayerRed" type="AnimatedSprite2D" parent="."]
-position = Vector2(163, 159)
+texture_filter = 1
+position = Vector2(604, 288)
 scale = Vector2(2.54688, 2.7518)
-sprite_frames = SubResource("SpriteFrames_wodde")
-script = ExtResource("13_3na2q")
+sprite_frames = SubResource("SpriteFrames_dwpjk")
+script = ExtResource("13_ddnie")
 
 [node name="PlayerBlue" type="AnimatedSprite2D" parent="."]
-position = Vector2(224, 162)
+texture_filter = 1
+material = SubResource("ShaderMaterial_q5xht")
+position = Vector2(545, 288)
 scale = Vector2(2.40313, 2.80365)
-sprite_frames = SubResource("SpriteFrames_ohiyg")
-animation = &"up"
-script = ExtResource("13_3na2q")
+sprite_frames = SubResource("SpriteFrames_mfjm3")
+script = ExtResource("13_ddnie")
 
-[node name="Win" parent="." instance=ExtResource("19_xe8vt")]
+[node name="Win" parent="." instance=ExtResource("19_m3j70")]
 
-[node name="Restart" parent="." instance=ExtResource("20_g3wg0")]
+[node name="Restart" parent="." instance=ExtResource("20_0iy2c")]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("19_yx5lq")
+stream = ExtResource("21_ehs0s")
 volume_db = -6.0
 autoplay = true
 parameters/looping = true

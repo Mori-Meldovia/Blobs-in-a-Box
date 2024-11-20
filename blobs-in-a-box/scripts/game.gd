@@ -415,10 +415,11 @@ func _process(delta: float) -> void:
 					for x in range(SEARCH_SIZE.x):
 						var pos := Vector2i(x, y)
 						var atlas : Vector2i = $Objects.get_cell_atlas_coords(pos)
+						var rot = $Objects.get_cell_alternative_tile(pos)
 						if atlas.x == OBJECTS.GATE_GREEN_CLOSED:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.RIGHT, rot)
 						elif atlas.x == OBJECTS.GATE_GREEN_OPEN:
-							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT)
+							$Objects.set_cell(pos, SOURCE, atlas + Vector2i.LEFT, rot)
 				green_on = this_green_on;
 		
 		if yellow_buttons.size() > 0:
