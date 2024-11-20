@@ -560,5 +560,23 @@ text = "Switches work with Gates!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -308.0
+offset_top = 179.0
+offset_right = 105.0
+offset_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("19_n6ac5")
+theme_override_font_sizes/font_size = 30
+text = "Purple interacts with purple"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="pressed" from="Win" to="." method="_on_win_pressed"]
 [connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
