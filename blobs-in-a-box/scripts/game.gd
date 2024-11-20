@@ -599,7 +599,7 @@ func teleport(obj, object : OBJECTS) -> void:
 					if (objs == obj):
 						objs.moves.pop_back();
 						objs.moves.append(currTele.pos) # update the actual position first
-
+					
 				await get_tree().create_timer(0.1).timeout
 				t = 0
 				obj.pos = currTele.pos # now update the node position
@@ -649,4 +649,4 @@ func _on_win_pressed() -> void:
 
 
 func _on_restart_pressed() -> void:
-	get_tree().change_scene_to_file(get_tree().current_scene.file_)
+	get_tree().change_scene_to_file(get_tree().current_scene.file)
